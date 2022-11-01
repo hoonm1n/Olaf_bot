@@ -1,8 +1,0 @@
-prefix=/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/install/aws_robomaker_hospital_world
-
-Name: aws_robomaker_hospital_world
-Description: Description of aws_robomaker_hospital_world
-Version: 1.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

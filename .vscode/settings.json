@@ -3,5 +3,9 @@
         "/home/hh/catkin_ws/devel/lib/python3/dist-packages",
         "/opt/ros/noetic/lib/python3/dist-packages"
     ],
-    "cmake.sourceDirectory": "${workspaceFolder}/Olaf_bot/aws-robomaker-hospital-world-ros1"
+    "cmake.sourceDirectory": "${workspaceFolder}/Olaf_bot/aws-robomaker-hospital-world-ros1",
+    "python.analysis.extraPaths": [
+        "/home/hh/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
 }
