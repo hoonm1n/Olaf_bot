@@ -1,0 +1,232 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_64e97/fast && /usr/bin/make -f CMakeFiles/cmTC_64e97.dir/build.make CMakeFiles/cmTC_64e97.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_64e97.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_64e97.dir/src.c.o   -c /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_64e97
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_64e97.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_64e97.dir/src.c.o  -o cmTC_64e97 
+/usr/bin/ld: CMakeFiles/cmTC_64e97.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_64e97.dir/build.make:87: cmTC_64e97] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_64e97/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_6fe04/fast && /usr/bin/make -f CMakeFiles/cmTC_6fe04.dir/build.make CMakeFiles/cmTC_6fe04.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6fe04.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_6fe04.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6fe04
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6fe04.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_6fe04.dir/CheckFunctionExists.c.o  -o cmTC_6fe04  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_6fe04.dir/build.make:87: cmTC_6fe04] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_6fe04/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_04111/fast && /usr/bin/make -f CMakeFiles/cmTC_04111.dir/build.make CMakeFiles/cmTC_04111.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_04111.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_04111.dir/src.c.o   -c /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_04111
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04111.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_04111.dir/src.c.o  -o cmTC_04111 
+/usr/bin/ld: CMakeFiles/cmTC_04111.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_04111.dir/build.make:87: cmTC_04111] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_04111/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4455f/fast && /usr/bin/make -f CMakeFiles/cmTC_4455f.dir/build.make CMakeFiles/cmTC_4455f.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4455f.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_4455f.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_4455f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4455f.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_4455f.dir/CheckFunctionExists.c.o  -o cmTC_4455f  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_4455f.dir/build.make:87: cmTC_4455f] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_4455f/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_19fa4/fast && /usr/bin/make -f CMakeFiles/cmTC_19fa4.dir/build.make CMakeFiles/cmTC_19fa4.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_19fa4.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_19fa4.dir/src.c.o   -c /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_19fa4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19fa4.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_19fa4.dir/src.c.o  -o cmTC_19fa4 
+/usr/bin/ld: CMakeFiles/cmTC_19fa4.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_19fa4.dir/build.make:87: cmTC_19fa4] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_19fa4/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7cd9b/fast && /usr/bin/make -f CMakeFiles/cmTC_7cd9b.dir/build.make CMakeFiles/cmTC_7cd9b.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7cd9b.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_7cd9b.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_7cd9b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7cd9b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_7cd9b.dir/CheckFunctionExists.c.o  -o cmTC_7cd9b  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_7cd9b.dir/build.make:87: cmTC_7cd9b] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_7cd9b/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_5027b/fast && /usr/bin/make -f CMakeFiles/cmTC_5027b.dir/build.make CMakeFiles/cmTC_5027b.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5027b.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_5027b.dir/src.c.o   -c /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_5027b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5027b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_5027b.dir/src.c.o  -o cmTC_5027b 
+/usr/bin/ld: CMakeFiles/cmTC_5027b.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_5027b.dir/build.make:87: cmTC_5027b] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_5027b/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_040be/fast && /usr/bin/make -f CMakeFiles/cmTC_040be.dir/build.make CMakeFiles/cmTC_040be.dir/build
+make[1]: Entering directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_040be.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_040be.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_040be
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_040be.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_040be.dir/CheckFunctionExists.c.o  -o cmTC_040be  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_040be.dir/build.make:87: cmTC_040be] Error 1
+make[1]: Leaving directory '/home/minji/catkin_ws/src/aws-robomaker-hospital-world-ros1/build/aws_robomaker_hospital_world/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_040be/fast] Error 2
+
+
+
