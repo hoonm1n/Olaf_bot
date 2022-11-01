@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<robot name="omo_r1" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find omo_r1_description)/urdf/common_properties.xacro"/>
+<robot name="Olaf" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find Olaf_description)/urdf/common_properties.xacro"/>
 
   <link name="base_footprint"/>
 
@@ -14,7 +14,7 @@
     <visual>
       <origin xyz="0.097 0.276 0.19" rpy="3.14 0 -1.57"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/bases/omo_r1_body.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/bases/Olaf_body.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="light_black"/>
     </visual>
@@ -22,7 +22,7 @@
     <collision>
       <origin xyz="0.097 0.276 0.19" rpy="3.14 0 -1.57"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/bases/omo_r1_body.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/bases/Olaf_body.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -46,7 +46,7 @@
     <visual>
       <origin xyz="-0.1105 -0.06 0.1104" rpy="-1.57 0 0"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/wheels/omo_r1_wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/wheels/Olaf_wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -54,7 +54,7 @@
     <collision>
       <origin xyz="-0.1105 -0.06 0.1104" rpy="-1.57 0 0"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/wheels/omo_r1_wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/wheels/Olaf_wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -78,7 +78,7 @@
     <visual>
       <origin xyz="-0.110 0.06 -0.1103" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/wheels/omo_r1_wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/wheels/Olaf_wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -86,7 +86,7 @@
     <collision>
       <origin xyz="-0.110 0.06 -0.1103" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/wheels/omo_r1_wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/wheels/Olaf_wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -163,7 +163,7 @@
     <visual>
       <origin xyz="0 0 0.0" rpy="0.0 0 0.0"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/sensors/omo_r1_lidar.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/sensors/Olaf_lidar.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -171,7 +171,7 @@
     <collision>
       <origin xyz="0 0 0.0" rpy="0.0 0 0.0"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/sensors/omo_r1_lidar.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/sensors/Olaf_lidar.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -194,7 +194,7 @@
     <visual>
       <origin xyz="0 0 0.0" rpy="1.5758 0.0 1.5758"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/sensors/omo_r1_camera.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/sensors/Olaf_camera.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -202,7 +202,7 @@
     <collision>
       <origin xyz="0 0 0.0" rpy="1.5758 0.0 1.5758"/>
       <geometry>
-        <mesh filename="package://omo_r1_description/meshes/sensors/omo_r1_camera.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://Olaf_description/meshes/sensors/Olaf_camera.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
