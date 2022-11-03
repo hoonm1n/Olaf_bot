@@ -6,6 +6,29 @@
 #include <ros/ros.h>
 #include <motor_test/motor_node.h>
 #include <fstream>
+#include <cmath>
+#include <motor_test/To_odom.h>
+#define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
+
+typedef struct pid_param
+{
+  double kP=0;
+  double kI=0;
+  double kD=0;
+  double Imax=0;
+  double Dmax=10;
+} pid_param;
+
+typedef struct pid
+{
+  double p_out=0;
+  double integrator=0;
+  double derivative=0;
+  double last_input=0;
+  double lastderivative=0;
+
+  double output=0;
+} pid;
 
 void Text_Input(void)
 {
@@ -33,6 +56,7 @@ void Text_Input(void)
   }
   inFile.close();
 }
+
 int Motor_Setup(void)
 {
   pinum=pigpio_start(NULL, NULL);
@@ -73,7 +97,7 @@ int Motor_Setup(void)
 
   current_Direction1 = true;
   current_Direction2 = true;
-
+  
   acceleration = PWM_limit/(Acceleration_ratio);
 
   ROS_INFO("Setup Fin");
@@ -124,11 +148,31 @@ void Init_Encoder(void)
 {
   EncoderCounter1 = 0;
   EncoderCounter2 = 0;
-  EncoderCounter1A = 0;
+  EncoderCounter1A = 0;typedef struct pid_param
+{
+  double kP=0;
+  double kI=0;
+  double kD=0;
+  double Imax=0;
+  double Dmax=10;
+} pid_param;
+
+typedef struct pid
+{
+  double p_out=0;
+  double integrator=0;
+  double derivative=0;
+  double last_input=0;
+  double lastderivative=0;
+
+  double output=0;
+} pid;
   EncoderCounter1B = 0;
   EncoderCounter2A = 0;
   EncoderCounter2B = 0;
+
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 void Initialize(void)
 {
@@ -142,6 +186,7 @@ void Initialize(void)
 
   switch_direction = true;
   Theta_Distance_Flag = 0;
+ 
 
   ROS_INFO("PWM_range %d", PWM_range);
   ROS_INFO("PWM_frequency %d", PWM_frequency);
@@ -152,6 +197,27 @@ void Initialize(void)
 
   printf("\033[2J");  
 }
+
+
+
+int Limit_Function(int pwm)
+{
+  int output;
+  if (pwm > PWM_limit*2)
+  {
+    output = PWM_limit;
+    ROS_WARN("PWM too fast!!!");
+  }
+  else if(pwm > PWM_limit)output = PWM_limit;
+  else if(pwm < 0)
+  {
+	output = 0;
+    ROS_WARN("trash value!!!");
+  }
+  else output = pwm;
+  return output; 
+}
+
 
 void Motor_Controller(int motor_num, bool direction, int pwm)
 {
@@ -192,199 +258,72 @@ void Motor_Controller(int motor_num, bool direction, int pwm)
      current_Direction2 = false;
    }
   }
-}
-void Accel_Controller(int motor_num, bool direction, int desired_pwm)
-{
-  bool local_current_direction;
-  int local_PWM;
-  int local_current_PWM;
 
-  if(motor_num == 1)
-  {
-    local_current_direction = current_Direction1;
-    local_current_PWM = current_PWM1;
-  }
-  else if(motor_num == 2)
-  {
-    local_current_direction = current_Direction2;
-    local_current_PWM = current_PWM2;
-  }
-
-  if(direction == local_current_direction)
-  {
-    if(desired_pwm > local_current_PWM)
-    {
-      local_PWM = local_current_PWM + acceleration;
-      Motor_Controller(motor_num, direction, local_PWM);
-    }
-    else if(desired_pwm < local_current_PWM)
-    {
-      local_PWM = local_current_PWM - acceleration;
-      Motor_Controller(motor_num, direction, local_PWM);
-    }
-    else
-    {
-      local_PWM = local_current_PWM;
-      Motor_Controller(motor_num, direction, local_PWM);
-    }
-  }
-  else
-  {
-	  if(desired_pwm >= 0)
-	  {
-      local_PWM = local_current_PWM - acceleration;
-      if(local_PWM <= 0)
-      {
-        local_PWM = 0;
-        Motor_Controller(motor_num, direction, local_PWM);
-      }
-      else Motor_Controller(motor_num, local_current_direction, local_PWM);
-	  }
-    else
-    {
-      local_PWM = local_current_PWM;
-      Motor_Controller(motor_num, direction, local_PWM);
-    }
-  }
 }
 
-void Switch_Turn_Example(int PWM1, int PWM2)
+double PidContoller(double goal, double error, double dt, pid *pid_data, pid_param *pid_paramdata, int error_rat)
 {
-  int local_PWM1 = Limit_Function(PWM1);
-  int local_PWM2 = Limit_Function(PWM2);
-  if(switch_direction == true)
-  {
-    Motor_Controller(1, switch_direction, local_PWM1);
-    Motor_Controller(2, switch_direction, local_PWM2);
-    switch_direction = false;
-    ROS_INFO("true");
-  }
-  else
-  {
-    Motor_Controller(1, switch_direction, local_PWM1);
-    Motor_Controller(2, switch_direction, local_PWM2);
-    switch_direction = true;
-    ROS_INFO("false");
-  }
-}
-void Theta_Turn(double Theta, int PWM)
-{
-  double local_encoder;
-  int local_PWM = Limit_Function(PWM);
-  if(Theta_Distance_Flag == 1)
-  {
-      Init_Encoder();
-      Theta_Distance_Flag = 2;
-  }
-  Motor1_Encoder_Sum();
-  Motor2_Encoder_Sum();
-  if(Theta > 0)
-  {
-    local_encoder = (Encoder_resolution*4/360)*(Robot_round/Wheel_round)*Theta;
-    Motor_Controller(1, false, local_PWM);
-    Motor_Controller(2, false, local_PWM);
-    //Accel_Controller(1, false, local_PWM);
-    //Accel_Controller(2, false, local_PWM);
-  }
-  else
-  {
-    local_encoder = -(Encoder_resolution*4/360)*(Robot_round/Wheel_round)*Theta;
-    Motor_Controller(1, true, local_PWM);
-    Motor_Controller(2, true, local_PWM);
-    //Accel_Controller(1, true, local_PWM);
-    //Accel_Controller(2, true, local_PWM);
-  }
+  // ROS_INFO(" goal : %f, curr: %f, dt: %f", goal,curr,dt);
+  // double error = goal - curr;
+  // ROS_INFO(" error : %f", error);
+  if (fabs(error) < error_rat)
+    error = 0;
 
-  if(EncoderCounter1 > local_encoder)
-  {
-    Init_Encoder();
-    Motor_Controller(1, true, 0);
-    Motor_Controller(2, true, 0);
-    Theta_Distance_Flag = 3;
-  }
-}
-void Distance_Go(double Distance, int PWM)
+  pid_data->p_out = pid_paramdata->kP * error;
+  double p_data = pid_data->p_out ;
+
+  pid_data->integrator += (error * pid_paramdata->kI) * dt;
+  pid_data->integrator = constrain(pid_data->integrator, -pid_paramdata->Imax, pid_paramdata->Imax);
+  double i_data = pid_data->integrator;
+
+  double filter = 7.9577e3-3; // Set to  "1 / ( 2 * PI * f_cut )";
+  // Examples for _filter:
+  // f_cut = 10 Hz -> _filter = 15.9155e-3
+  // f_cut = 15 Hz -> _filter = 10.6103e-3
+  // f_cut = 20 Hz -> _filter =  7.9577e-3
+  // f_cut = 25 Hz -> _filter =  6.3662e-3
+  // f_cut = 30 Hz -> _filter =  5.3052e-3
+
+  pid_data->derivative = (goal - pid_data->last_input) / dt;
+  pid_data->derivative = pid_data->lastderivative + (dt / (filter + dt)) * (pid_data->derivative - pid_data->lastderivative);
+  pid_data->last_input = goal;
+  pid_data->lastderivative = pid_data->derivative;typedef struct pid_param
 {
-  double local_encoder = (Encoder_resolution*4*Distance)/Wheel_round;
-  int local_PWM = Limit_Function(PWM);
-  bool Direction = true;
-  if(Distance < 0)
-  {
-    Direction = false;
-    local_encoder = -local_encoder;
-  }
-  if(Theta_Distance_Flag == 3)
-  {
-      Init_Encoder();
-      Theta_Distance_Flag = 4;
-  }
-  Motor1_Encoder_Sum();
-  Motor2_Encoder_Sum();
-  if(EncoderCounter1 < local_encoder)
-  {
-    if(Direction==true)
-    {
-      Motor_Controller(1, false, local_PWM);
-      Motor_Controller(2, true, local_PWM);
-      //Accel_Controller(1, false, local_PWM);
-      //Accel_Controller(2, true, local_PWM);
-    }
-    else
-    {
-      Motor_Controller(1, true, local_PWM);
-      Motor_Controller(2, false, local_PWM);
-      //Accel_Controller(1, true, local_PWM);
-      //Accel_Controller(2, false, local_PWM);
-    }
-  }
-  else
-  {
-    Init_Encoder();
-    Motor_Controller(1, true, 0);
-    Motor_Controller(2, true, 0);
-    //Accel_Controller(1, true, 0);
-    //Accel_Controller(2, true, 0);
-    Theta_Distance_Flag = 0;
-  }
-}
-void Theta_Distance(double Theta, int Turn_PWM, double Distance, int Go_PWM)
+  double kP=0;
+  double kI=0;
+  double kD=0;
+  double Imax=0;
+  double Dmax=10;
+} pid_param;
+
+typedef struct pid
 {
-  if(Theta_Distance_Flag == 0)
-  {
-    Theta_Distance_Flag = 1;
-  }
-  else if(Theta_Distance_Flag == 1 || Theta_Distance_Flag == 2)
-  {
-    Theta_Turn(Theta, Turn_PWM);
-  }
-  else if(Theta_Distance_Flag == 3 || Theta_Distance_Flag == 4)
-  {
-    Distance_Go(Distance, Go_PWM);
-  }
+  double p_out=0;
+  double integrator=0;
+  double derivative=0;
+  double last_input=0;
+  double lastderivative=0;
+
+  double output=0;
+} pid;
+  double d_data = pid_paramdata->kD * pid_data->derivative;
+  d_data = constrain(d_data, -pid_paramdata->Dmax, pid_paramdata->Dmax);
+
+  double output = p_data + i_data + d_data;
+  pid_data->output = output;
+
+  return pid_data->output;
 }
 
-int Limit_Function(int pwm)
-{
-  int output;
-  if (pwm > PWM_limit*2)
-  {
-    output = PWM_limit;
-    ROS_WARN("PWM too fast!!!");
-  }
-  else if(pwm > PWM_limit)output = PWM_limit;
-  else if(pwm < 0)
-  {
-	output = 0;
-    ROS_WARN("trash value!!!");
-  }
-  else output = pwm;
-  return output; 
-}
 void RPM_Calculator()
 {
   RPM_Value1 = (EncoderSpeedCounter1*(60*Control_cycle))/(Encoder_resolution*4);
+  w1=(RPM_Value1*2*PI/60);
+  velL=Wheel_radius*w1;
   EncoderSpeedCounter1 = 0;
   RPM_Value2 = (EncoderSpeedCounter2*(60*Control_cycle))/(Encoder_resolution*4);
+  w2=(RPM_Value2*2*PI/60);
+  velL=Wheel_radius*w2;
   EncoderSpeedCounter2 = 0;
 }
 void Motor_View()
@@ -395,10 +334,13 @@ void Motor_View()
 	printf("Encoder1A : %5d  ||  Encoder2A : %5d\n", EncoderCounter1A, EncoderCounter2A);
 	printf("Encoder1B : %5d  ||  Encoder2B : %5d\n", EncoderCounter1B, EncoderCounter2B);
 	printf("RPM1 : %10.0f    ||  RPM2 : %10.0f\n", RPM_Value1, RPM_Value2);
+  printf("W1: %10.0f || W2 :%10.0f\n",w1,w2);
+  printf("velL: %10.0f || velR: 10.0f\n",velL,velR);    //출력되라~
 	printf("PWM1 : %10.0d    ||  PWM2 : %10.0d\n", current_PWM1, current_PWM2);
 	printf("DIR1 :%10.0d     ||  DIR2 :%10.0d\n", current_Direction1, current_Direction2);
 	printf("Acc  :%10.0d\n", acceleration);
 	printf("\n");
+  
 }
 
 int main(int argc, char** argv)
@@ -406,17 +348,21 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "motor_node");
   ros::NodeHandle nh;
   Initialize();
- ros::Rate loop_rate(Control_cycle);
-
+  ros::Publisher odom_node = nh.advertise<motor_test::To_odom>("wheel_vel", 1000);
+  ros::Rate loop_rate(Control_cycle);
+  motor_test::To_odom to_odom;
   while(ros::ok())
   {
     //Motor_Controller(1, true, 100);
     //Motor_Controller(2, true, 100);
     //Accel_Controller(1, true, 100);
     //Accel_Controller(2, true, 100);
-    //Switch_Turn_Example(100, 100);
+    //Switch_Turn_  Example(100, 100);
     //Theta_Distance(180,100,30,110);
     Motor_View();
+    to_odom.velL=velL;
+  to_odom.velR=velR;
+  odom_node.publish(to_odom);
     ros::spinOnce();
     loop_rate.sleep();
   }

@@ -4,14 +4,30 @@ project(motor_test)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  message_generation
 )
+
+add_message_files(
+  FILES
+  To_odom.msg
+)
+
+generate_messages(
+   DEPENDENCIES
+   std_msgs
+)
+
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES motor_test
-  CATKIN_DEPENDS roscpp std_msgs
+  LIBRARIES motor_testS
+  CATKIN_DEPENDS roscpp std_msgs message_runtime
   DEPENDS system_lib
 )
+
+
+
+
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 

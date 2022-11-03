@@ -72,6 +72,10 @@ void Theta_Distance(double Theta, int Turn_PWM, double Distance, int Go_PWM);
 int Limit_Function(int pwm);
 double RPM_Value1;
 double RPM_Value2;
+double w1;
+double w2;
+double velL;
+double velR;
 void RPM_Calculator();
 void Motor_View();
 
