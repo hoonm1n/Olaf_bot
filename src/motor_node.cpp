@@ -6,7 +6,7 @@
 #include <ros/ros.h>
 #include <motor_test/motor_node.h>
 #include <fstream>
-lude <cmath>
+#include <cmath>
 #include <motor_test/To_odom.h>
 #define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
 
@@ -148,25 +148,7 @@ void Init_Encoder(void)
 {
   EncoderCounter1 = 0;
   EncoderCounter2 = 0;
-  EncoderCounter1A = 0;typedef struct pid_param
-{
-  double kP=0;
-  double kI=0;
-  double kD=0;
-  double Imax=0;
-  double Dmax=10;
-} pid_param;
-
-typedef struct pid
-{
-  double p_out=0;
-  double integrator=0;
-  double derivative=0;
-  double last_input=0;
-  double lastderivative=0;
-
-  double output=0;
-} pid;
+  EncoderCounter1A = 0;
   EncoderCounter1B = 0;
   EncoderCounter2A = 0;
   EncoderCounter2B = 0;
@@ -287,25 +269,8 @@ double PidContoller(double goal, double error, double dt, pid *pid_data, pid_par
   pid_data->derivative = (goal - pid_data->last_input) / dt;
   pid_data->derivative = pid_data->lastderivative + (dt / (filter + dt)) * (pid_data->derivative - pid_data->lastderivative);
   pid_data->last_input = goal;
-  pid_data->lastderivative = pid_data->derivative;typedef struct pid_param
-{
-  double kP=0;
-  double kI=0;
-  double kD=0;
-  double Imax=0;
-  double Dmax=10;
-} pid_param;
+  pid_data->lastderivative = pid_data->derivative;
 
-typedef struct pid
-{
-  double p_out=0;
-  double integrator=0;
-  double derivative=0;
-  double last_input=0;
-  double lastderivative=0;
-
-  double output=0;
-} pid;
   double d_data = pid_paramdata->kD * pid_data->derivative;
   d_data = constrain(d_data, -pid_paramdata->Dmax, pid_paramdata->Dmax);
 
@@ -335,7 +300,7 @@ void Motor_View()
 	printf("Encoder1B : %5d  ||  Encoder2B : %5d\n", EncoderCounter1B, EncoderCounter2B);
 	printf("RPM1 : %10.0f    ||  RPM2 : %10.0f\n", RPM_Value1, RPM_Value2);
   printf("W1: %10.0f || W2 :%10.0f\n",w1,w2);
-  printf("velL: %10.0f || velR: 10.0f\n",velL,velR);    //출력되라~
+  printf("velL: %10.0f || velR: %10.0f\n",velL,velR);    //출력되라~
 	printf("PWM1 : %10.0d    ||  PWM2 : %10.0d\n", current_PWM1, current_PWM2);
 	printf("DIR1 :%10.0d     ||  DIR2 :%10.0d\n", current_Direction1, current_Direction2);
 	printf("Acc  :%10.0d\n", acceleration);
@@ -361,8 +326,8 @@ int main(int argc, char** argv)
     //Theta_Distance(180,100,30,110);
     Motor_View();
     to_odom.velL=velL;
-  to_odom.velR=velR;
-  odom_node.publish(to_odom);
+    to_odom.velR=velR;
+    odom_node.publish(to_odom);
     ros::spinOnce();
     loop_rate.sleep();
   }
