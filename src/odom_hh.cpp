@@ -2,6 +2,7 @@
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/String.h>
+#include <odom/To_odom.h>
 
 double x = 0.0;
 double y = 0.0;
@@ -29,8 +30,11 @@ ros::Time current_time, last_time;
 void Update_Odom(double dv_r, double dv_l){
   current_time = ros::Time::now();
   double dt = (current_time - last_time).toSec(); //sub주기로 타임스텝 맞춰야함
-  ds_r = dv_r*dt;
-  ds_l = dv_l*dt;
+  last_time = current_time;
+
+  ds_r = dv_r*0.1;
+  ds_l = dv_l*0.1;
+  ROS_INFO("send dt = %f", dt);
 
   //얼마나 움직였는 지에 대한 설정
   ds = (ds_r+ds_l)/2;
@@ -42,12 +46,11 @@ void Update_Odom(double dv_r, double dv_l){
   vx = delta_x/dt;
   vy = delta_y/dt;
   vth = delta_th/dt;
-  last_time = ros::Time::now();
 }
 
-void wheelVelCallback(const std_msgs::String::ConstPtr& msg){ //승인이의 바퀴 정보 받아오기
- // msg->data. = dv_r, dv_l;
-  Update_Odom(dv_r, dv_l);
+void wheelVelCallback(const odom::To_odom::ConstPtr& msg){ //승인이의 바퀴 정보 받아오기
+  dv_l = msg->velL;
+  dv_r = msg->velR;
 }
 
 int main(int argc, char** argv){
@@ -55,7 +58,7 @@ int main(int argc, char** argv){
 
   ros::NodeHandle n;
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
-  ros::Subscriber sub = n.subscribe("wheel_vel", 1000, wheelVelCallback);
+  ros::Subscriber sub = n.subscribe("wheel_vel", 10, wheelVelCallback);
   tf::TransformBroadcaster odom_broadcaster;
  
 
@@ -65,13 +68,20 @@ int main(int argc, char** argv){
   ros::Rate r(1.0);
   while(n.ok()){
 
-    ros::spinOnce();               // check for incoming messages
+    ros::spinOnce();              // check for incoming messages
+
+    Update_Odom(dv_r, dv_l);
  
 
     //compute odometry in a typical way given the velocities of the robot
     x += delta_x;
     y += delta_y;
     th += delta_th;
+
+    ROS_INFO("send x = %f", x);
+    ROS_INFO("send y = %f", y);
+    ROS_INFO("send th = %f", th);
+    
 
 
     //since all odometry is 6DOF we'll need a quaternion created from yaw
@@ -111,7 +121,7 @@ int main(int argc, char** argv){
     //publish the message
     odom_pub.publish(odom);
 
-    last_time = current_time;
+    //last_time = current_time;
     r.sleep();
   }
 }
