@@ -7,7 +7,7 @@
   <arg name="set_joy_en" default="0"/>
  
   <!--
-  <include file="$(find omo_r1_bringup)/launch/omo_r1_imu.launch">
+  <include file="$(find Olaf_bringup)/launch/Olaf_imu.launch">
     <arg name="set_port" value="$(arg set_port_imu)"/>
   </include>
 
@@ -15,11 +15,11 @@
   <include file="$(find myahrs_driver)/launch/myahrs_driver.launch" />
   -->
 
-  <include file="$(find omo_r1_bringup)/launch/omo_r1_motor.launch">
+  <include file="$(find Olaf_bringup)/launch/Olaf_motor.launch">
     <arg name="set_port" value="$(arg set_port_motor)"/>
   </include>
 
-  <include file="$(find omo_r1_bringup)/launch/omo_r1_lidar.launch">
+  <include file="$(find Olaf_bringup)/launch/Olaf_lidar.launch">
     <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
     <arg name="set_port" value="$(arg set_port_lidar)"/>
   </include>
