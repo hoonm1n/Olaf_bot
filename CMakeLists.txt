@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   message_generation
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -74,6 +75,7 @@ generate_messages(
    DEPENDENCIES
    nav_msgs 
    std_msgs
+   geometry_msgs
 )
 
 ################################################
@@ -108,7 +110,7 @@ generate_messages(
 catkin_package(
    ##INCLUDE_DIRS include
    ##LIBRARIES odom
-   CATKIN_DEPENDS nav_msgs roscpp rospy std_msgs tf message_runtime
+   CATKIN_DEPENDS nav_msgs roscpp rospy std_msgs tf message_runtime geometry_msgs
    ##DEPENDS system_lib
 )
 
@@ -142,3 +144,7 @@ target_link_libraries(odom_hh ${catkin_LIBRARIES})
 add_executable(pub_vel src/pub_vel.cpp)
 add_dependencies(pub_vel ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(pub_vel ${catkin_LIBRARIES})
+
+add_executable(velCal src/velCal.cpp)
+add_dependencies(velCal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(velCal ${catkin_LIBRARIES})
