@@ -13,8 +13,6 @@
   <exec_depend>Olaf_description</exec_depend>
   <exec_depend>Olaf_gazebo</exec_depend>
   <exec_depend>Olaf_navigation</exec_depend>
-  <exec_depend>Olaf_slam</exec_depend>
   <exec_depend>Olaf_teleop</exec_depend>
-  <exec_depend>Olaf_marker_tracker</exec_depend>
   <export><metapackage/></export>
 </package>
