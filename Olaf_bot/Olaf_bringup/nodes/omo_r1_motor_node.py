@@ -17,30 +17,30 @@ from tf.broadcaster import TransformBroadcaster
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 from omo_r1_bringup.srv import ResetOdom, ResetOdomResponse
 
-class OdomPose(object):
+class OdomPose(object): #odompose 초기 지정
    x = 0.0
    y = 0.0
    theta = 0.0
    timestamp = 0
 
-class OdomVel(object):
+class OdomVel(object): #odomvel 초기 지정
    x = 0.0
    y = 0.0
    w = 0.0
 
-class Joint(object):
+class Joint(object): #Wheel_joint 속도 및 위치 초기 지정
    joint_name = ['wheel_left_joint', 'wheel_right_joint']
    joint_pos = [0.0, 0.0]
    joint_vel = [0.0, 0.0]
 
 class RobotConfig(object):
-   body_circumference = 0        # circumference length of robot for spin in place
-   wheel_separation = 0.0        # Default Vehicle width in mm
-   wheel_radius = 0.0            # Wheel radius
-   wheel_circumference = 0       # Wheel circumference
-   max_lin_vel_wheel = 0.0       # Maximum speed can be applied to each wheel (mm/s)
-   max_lin_vel_x = 0             # Speed limit for vehicle (m/s)
-   max_ang_vel_z = 0             # Rotational Speed limit for vehicle (rad/s)
+   body_circumference = 0        # 로봇이 제자리 회전할 때의 원의 둘레
+   wheel_separation = 0.0        # 기본 차량 너비
+   wheel_radius = 0.0            # 휠 radious 값
+   wheel_circumference = 0       # 휠의 둘레
+   max_lin_vel_wheel = 0.0       # 휠의 최대 속도
+   max_lin_vel_x = 0             # 차량의 최대 속도 m/s
+   max_ang_vel_z = 0             # 차량의 최대 토크 속도
 
    encoder_gear_ratio = 0
    encoder_step = 0
@@ -461,7 +461,7 @@ class OMOR1MotorNode:
       joint_states.velocity = self.joint.joint_vel
       joint_states.effort = []
 
-      self.pub_joint_states.publish(joint_states)
+      self.pub_s.publish(joint_states)
 
    def reset_odom_handle(self, req):
       self.odom_pose.x = req.x
