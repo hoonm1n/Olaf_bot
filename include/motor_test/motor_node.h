@@ -4,13 +4,13 @@
 
 #define motor1_DIR 19
 #define motor1_PWM 26
-#define motor1_ENA 23
-#define motor1_ENB 24
+#define motor1_ENA 27
+#define motor1_ENB 17
 
 #define motor2_DIR 6
 #define motor2_PWM 13
-#define motor2_ENA 27
-#define motor2_ENB 17
+#define motor2_ENA 23
+#define motor2_ENB 24
 
 #define PI 3.141592
 
@@ -79,4 +79,8 @@ double velR;
 void RPM_Calculator();
 void Motor_View();
 
+
+  pid pl, pr;
+  pid_param pl_param, pr_param;
+  
 #endif // MOTOR_NODE_H

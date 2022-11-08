@@ -182,6 +182,7 @@ void Initialize(void)
 
 
 
+
 int Limit_Function(int pwm)
 {
   int output;
@@ -308,18 +309,20 @@ void Motor_View()
   
 }
 
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "motor_node");
   ros::NodeHandle nh;
   Initialize();
-  ros::Publisher odom_node = nh.advertise<motor_test::To_odom>("wheel_vel", 1000);
+  ros::Publisher odom_pub = nh.advertise<motor_test::To_odom>("wheel_vel", 1000);
   ros::Rate loop_rate(Control_cycle);
   motor_test::To_odom to_odom;
+
   while(ros::ok())
   {
-    //Motor_Controller(1, true, 100);
-    //Motor_Controller(2, true, 100);
+    Motor_Controller(1, true, 100);
+    Motor_Controller(2, true, 100);
     //Accel_Controller(1, true, 100);
     //Accel_Controller(2, true, 100);
     //Switch_Turn_  Example(100, 100);
@@ -327,7 +330,7 @@ int main(int argc, char** argv)
     Motor_View();
     to_odom.velL=velL;
     to_odom.velR=velR;
-    odom_node.publish(to_odom);
+    odom_pub.publish(to_odom);
     ros::spinOnce();
     loop_rate.sleep();
   }
