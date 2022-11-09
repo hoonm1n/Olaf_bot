@@ -15,11 +15,11 @@
   <include file="$(find myahrs_driver)/launch/myahrs_driver.launch" />
   -->
 
-  <include file="$(find omo_r1_bringup)/launch/omo_r1_motor.launch">
+  <include file="$(find Olaf_bringup)/launch/Olaf_motor.launch">
     <arg name="set_port" value="$(arg set_port_motor)"/>
   </include>
 
-  <include file="$(find omo_r1_bringup)/launch/omo_r1_lidar_G2.launch">
+  <include file="$(find Olaf_bringup)/launch/Olaf_lidar_G2.launch">
     <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
     <arg name="set_port" value="$(arg set_port_lidar)"/>
   </include>
