@@ -17,8 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   geometry_msgs
   tf
-  usb_cam
-  omo_r1_description
+  #usb_cam
+  Olaf_description
   message_generation
 )
 add_message_files(
@@ -55,7 +55,7 @@ generate_messages(
 )
 
 catkin_package(
-  CATKIN_DEPENDS rospy roscpp sensor_msgs nav_msgs geometry_msgs tf usb_cam omo_r1_description message_runtime
+  CATKIN_DEPENDS rospy roscpp sensor_msgs nav_msgs geometry_msgs tf Olaf_description message_runtime #usb_cam
 )
 
 
@@ -79,15 +79,15 @@ install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-add_executable(odom_hh nodes/odom_hh.cpp)
+add_executable(odom_hh src/odom_hh.cpp)
 add_dependencies(odom_hh ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(odom_hh ${catkin_LIBRARIES})
 
-add_executable(pub_vel nodes/pub_vel.cpp)
+add_executable(pub_vel src/pub_vel.cpp)
 add_dependencies(pub_vel ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(pub_vel ${catkin_LIBRARIES})
 
-add_executable(velCal nodes/velCal.cpp)
+add_executable(velCal src/velCal.cpp)
 add_dependencies(velCal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(velCal ${catkin_LIBRARIES})
 ################################################################################
