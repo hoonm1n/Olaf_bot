@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>omo_r1_navigation</name>
+  <name>Olaf_navigation</name>
   <version>0.0.1</version>
   <description>
     OMO R1 robot package - launchers which uses optimized move base parameters.
@@ -12,5 +12,5 @@
   <exec_depend>amcl</exec_depend>
   <exec_depend>map_server</exec_depend>
   <exec_depend>move_base</exec_depend>
-  <exec_depend>omo_r1_bringup</exec_depend>
+  <exec_depend>Olaf_bringup</exec_depend>
 </package>
