@@ -1,9 +1,9 @@
 <launch>
-  <arg name="set_port" default="/dev/ttyIMU"/>
+  <arg name="set_port" default="/dev/IMU"/>
 
-  <node pkg="rosserial_python" type="serial_node.py" name="omo_r1_imu" output="screen">
-    <param name="port" value="$(arg set_port)"/>
-    <param name="baud" value="115200"/>
+  <node pkg="iahrs_driver" type="iahrs_driver" name="iahrs_driver" output="screen">
+    <!-- <param name="port" value="$(arg set_port)"/>
+    <param name="baud" value="115200"/> -->
     <param name="tf_prefix" value=""/>
   </node>
 </launch>
