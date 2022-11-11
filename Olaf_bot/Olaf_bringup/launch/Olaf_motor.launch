@@ -10,7 +10,7 @@
       <param name="odom_mode" value="$(arg set_odom_mode)"/>
       <param name="modelName" value="r1"/>
   </node>
-  <node pkg="Olaf_bringup" type="velCal" name="velCal" output="screen">
+  <!-- <node pkg="Olaf_bringup" type="velCal" name="velCal" output="screen">
       <param name="modelName" value="r1"/>
-  </node>
+  </node> -->
 </launch>
