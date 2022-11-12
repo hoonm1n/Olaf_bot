@@ -105,7 +105,9 @@ namespace estimation
 
     // initialize
     filter_stamp_ = Time::now();
-
+    ROS_DEBUG("=================================");
+    ROS_DEBUG("%f", filter_stamp_);
+    ROS_DEBUG("=================================");
     // subscribe to odom messages
     if (odom_used_){
       ROS_DEBUG("Odom sensor can be used");
@@ -389,7 +391,9 @@ namespace estimation
     
     // initial value for filter stamp; keep this stamp when no sensors are active
     filter_stamp_ = Time::now();
-    
+    ROS_DEBUG("=================================");
+    ROS_DEBUG("%f", filter_stamp_);
+    ROS_DEBUG("=================================");
     // check which sensors are still active
     if ((odom_active_ || odom_initializing_) && 
         (Time::now() - odom_time_).toSec() > timeout_){
@@ -542,7 +546,6 @@ int main(int argc, char **argv)
 
   // create filter class
   OdomEstimationNode my_filter_node;
-
   ros::spin();
   
   return 0;

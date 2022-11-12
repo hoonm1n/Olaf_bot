@@ -60,10 +60,12 @@ int main(int argc, char** argv){
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
   ros::Subscriber sub = n.subscribe("wheel_vel", 10, wheelVelCallback);
   //tf::TransformBroadcaster odom_broadcaster;
+
+  float x_covariance(20);
+	float y_covariance(20);
+	float yaw_covariance(50);		
  
-
   ros::Time current_time, last_time;
-
 
   ros::Rate r(1.0);
   while(n.ok()){
@@ -118,8 +120,25 @@ int main(int argc, char** argv){
     odom.twist.twist.linear.y = vy;
     odom.twist.twist.angular.z = vth;
 
+    //fixed odom coveriancce
+    odom.pose.covariance[0] = x_covariance;
+	  odom.pose.covariance[7] = y_covariance;
+	  odom.pose.covariance[14] = FLT_MAX;
+	  odom.pose.covariance[21] = FLT_MAX;
+	  odom.pose.covariance[28] =FLT_MAX;
+	  odom.pose.covariance[35] = yaw_covariance;
+
+	  odom.twist.covariance[0] = .1;
+	  odom.twist.covariance[7] = .1;
+	  odom.twist.covariance[14] = 1000000000;
+	  odom.twist.covariance[21] = 1000000000;
+	  odom.twist.covariance[28] = 1000000000;
+	  odom.twist.covariance[35] = .1;
+
     //publish the message
     odom_pub.publish(odom);
+
+    
 
     //last_time = current_time;
     r.sleep();
