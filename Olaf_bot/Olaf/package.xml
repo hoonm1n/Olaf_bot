@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>Olaf</name>
+  <version>0.0.1</version>
+  <description>
+    Olaf robot meta package
+  </description>
+  <license>Apache 2.0</license>
+  <author email="bishopearson@gmail.com">Bishop Pearson</author>
+  <maintainer email="bishopearson@gmail.com">Bishop Pearson</maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>Olaf_bringup</exec_depend>
+  <exec_depend>Olaf_description</exec_depend>
+  <exec_depend>Olaf_gazebo</exec_depend>
+  <exec_depend>Olaf_navigation</exec_depend>
+  <exec_depend>Olaf_teleop</exec_depend>
+  <export><metapackage/></export>
+</package>

@@ -1,0 +1,7 @@
+<launch>
+  <!-- launching state publishers -->
+  <include file="$(find Olaf_bringup)/launch/Olaf_remote.launch"/>
+
+  <!-- launching gmapping node and parameters -->
+  <include file="$(find Olaf_slam)/launch/Olaf_gmapping.launch"/>
+</launch>
