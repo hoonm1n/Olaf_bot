@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "talker");
   ros::NodeHandle n;
-  ros::Publisher odom_node = n.advertise<Olaf_bringup::To_odom>("wheel_vel", 10);
+  ros::Publisher odom_node = n.advertise<Olaf_bringup::To_odom>("goalvel", 10);
   ros::Subscriber sub_cmdVel = n.subscribe("cmd_vel", 10, CmdVelCallback);
   ros::Subscriber sub_odom = n.subscribe("amcl_pose", 10, OdomCallback);
 
