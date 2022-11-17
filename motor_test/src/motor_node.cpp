@@ -15,7 +15,7 @@ void Text_Input(void)
   int i = 0;
   std::size_t found;
   std::ifstream inFile;
-  inFile.open("/home/ubuntu/catkin_ws/src/motor_test20/motor_input.txt");
+  inFile.open("/home/ubuntu/catkin_ws/src/motor_test/motor_input.txt");
   for(std::string line; std::getline(inFile,line);)
   {
       found=line.find("=");
@@ -177,10 +177,10 @@ typedef struct pid
   double output=0;
 } pid;
 */
-void PidContoller_L(double goal, double curr, double dt, int error_rat)
+void PidContoller_L(float goal, float curr, float dt, int error_rat)
 {
 
-  double up,ui,ud,output =0;
+  float up,ui,ud,output =0;
   pid_PWMl=0;
   
   errorl=goal-curr;
@@ -210,10 +210,10 @@ void PidContoller_L(double goal, double curr, double dt, int error_rat)
 
 }
 
-void PidContoller_R(double goal, double curr, double dt, int error_rat)
+void PidContoller_R(float goal, float curr, float dt, int error_rat)
 {
 
-  double up,ui,ud,output =0;
+  float up,ui,ud,output =0;
   pid_PWMr=0;
   
   errorr=goal-curr;
@@ -362,9 +362,9 @@ void Motor_Controller(int motor_num, bool direction, int pwm)
    }
   }
 }
-void Theta_Turn(double Theta, int PWM)
+void Theta_Turn(float Theta, int PWM)
 {
-  double local_encoder;
+  float local_encoder;
   int local_PWM = Limit_Function(PWM);
   if(Theta_Distance_Flag == 1)
   {
