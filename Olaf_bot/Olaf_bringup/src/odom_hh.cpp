@@ -120,21 +120,6 @@ int main(int argc, char** argv){
     odom.twist.twist.linear.y = vy;
     odom.twist.twist.angular.z = vth;
 
-    //fixed odom coveriancce
-    odom.pose.covariance[0] = x_covariance;
-	  odom.pose.covariance[7] = y_covariance;
-	  odom.pose.covariance[14] = FLT_MAX;
-	  odom.pose.covariance[21] = FLT_MAX;
-	  odom.pose.covariance[28] =FLT_MAX;
-	  odom.pose.covariance[35] = yaw_covariance;
-
-	  odom.twist.covariance[0] = .1;
-	  odom.twist.covariance[7] = .1;
-	  odom.twist.covariance[14] = 1000000000;
-	  odom.twist.covariance[21] = 1000000000;
-	  odom.twist.covariance[28] = 1000000000;
-	  odom.twist.covariance[35] = .1;
-
     //publish the message
     odom_pub.publish(odom);
 

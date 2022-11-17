@@ -4,7 +4,7 @@
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Twist.h>
 
-double vel_y = 0;
+double vel_x = 0;
 double vel_th = 0;
 double x = 0.0;
 double y = 0.0;
@@ -17,7 +17,7 @@ double L = 0.4104;
 ros::Time current_time, last_time;
 
 void CmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
-    vel_y = msg->linear.y;
+    vel_x = msg->linear.x;
     vel_th = msg->angular.z;
 }
 
@@ -27,15 +27,15 @@ void OdomCallback(const nav_msgs::Odometry::ConstPtr& msg){
     th = msg->pose.pose.orientation.z;
 }
 
-void Cal_Vel(float vel_y, float vel_th){
+void Cal_Vel(float vel_x, float vel_th){
   current_time = ros::Time::now();
   double dt = (current_time - last_time).toSec(); //sub주기로 타임스텝 맞춰야함
   last_time = current_time;
-  double del_y = vel_y*dt;
+  double del_x = vel_x*dt;
   double del_th = vel_th*dt;
 
-  double ds_r = ((2*del_y)/sin(th + del_th/2) + L*del_th)/2;
-  double ds_l = ((2*del_y)/sin(th + del_th/2) - L*del_th)/2;
+  double ds_r = ((2*del_x)/cos(th + del_th/2) + L*del_th)/2;
+  double ds_l = ((2*del_x)/cos(th + del_th/2) - L*del_th)/2;
 
   vel_r = ds_r/dt;
   vel_l = ds_l/dt;
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
   while (ros::ok())
   {
  
-    Cal_Vel(vel_y, vel_th);
+    Cal_Vel(vel_x, vel_th);
     to_odom.velL = vel_r;
     to_odom.velR = vel_l;
 
