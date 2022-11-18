@@ -7,6 +7,7 @@
 #include <motor_test/motor_node.h>
 #include <fstream>
 #include <motor_test/To_odom.h>
+#include <motor_test/PID.h>
 #include <cmath>
 #define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
 
@@ -15,7 +16,7 @@ void Text_Input(void)
   int i = 0;
   std::size_t found;
   std::ifstream inFile;
-  inFile.open("/home/ubuntu/catkin_ws/src/motor_test/motor_input.txt");
+  inFile.open("/home/ubuntu/catkin_ws/src/git_olaf/motor_test/motor_input.txt");
   for(std::string line; std::getline(inFile,line);)
   {
       found=line.find("=");
@@ -456,6 +457,16 @@ void goalvelCallback(const motor_test::To_odom::ConstPtr& msg){
 	kDr=msg->dr;
 }
 
+void pidCallback(const motor_test::PID::ConstPtr& msg){
+	kPl=msg->pl;
+	kIl=msg->il;
+	kDl=msg->dl;
+
+	kPr=msg->pr;
+	kIr=msg->ir;
+	kDr=msg->dr;
+}
+
 
 int main(int argc, char** argv)
 {
@@ -466,6 +477,7 @@ int main(int argc, char** argv)
   ros::Publisher odom_node = nh.advertise<motor_test::To_odom>("wheel_vel",10);
   motor_test::To_odom to_odom;
   ros::Subscriber sub = nh.subscribe("goalvel",10,goalvelCallback);
+  ros::Subscriber sub_pid = nh.subscribe("pid_vel",10,pidCallback);
   //pid pidL;
   while(ros::ok())
   {
