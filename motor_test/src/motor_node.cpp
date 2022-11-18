@@ -183,7 +183,8 @@ void PidContoller_L(float goal, float curr, float dt, int error_rat)
 
   float up,ui,ud,output =0;
   pid_PWMl=0;
-  
+  kPl = 1;
+  kDl = 0.1;
   errorl=goal-curr;
   if (fabs(errorl) < error_rat) {errorl = 0;}
   ROS_INFO("errorl : %f",errorl);
@@ -215,8 +216,9 @@ void PidContoller_R(float goal, float curr, float dt, int error_rat)
 {
 
   float up,ui,ud,output =0;
+  kPr = 1;
+  kDr = 0.1;
   pid_PWMr=0;
-  
   errorr=goal-curr;
   if (fabs(errorr) < error_rat) {errorr = 0;}
   ROS_INFO("errorr : %f",errorr);
@@ -451,7 +453,7 @@ void goalvelCallback(const motor_test::To_odom::ConstPtr& msg){
 	kPl=msg->pl;
 	kIl=msg->il;
 	kDl=msg->dl;
-
+	kPr=msg->pr;
 	kPr=msg->pr;
 	kIr=msg->ir;
 	kDr=msg->dr;
@@ -494,7 +496,7 @@ int main(int argc, char** argv)
     odom_node.publish(to_odom);
     
     
-    //PidContoller_L(goal_velL, cur_velL, 0.1,  5);
+    PidContoller_L(goal_velL, cur_velL, 0.1,  5);
     PidContoller_R(goal_velR, cur_velR, 0.1,  8);
     ROS_INFO("cur %f ,%f",cur_velL,cur_velR);
     ROS_INFO("goal %f ,%f",goal_velL,goal_velR);
