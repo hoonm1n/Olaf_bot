@@ -86,7 +86,7 @@ float goal_velL;
 float goal_velR;
 float kPl=30;
 float kIl=5;
-float kDl=5;
+float kDl=10;
 double Imaxl=0;
 double Dmaxl=10;
 int pid_PWMl=0;

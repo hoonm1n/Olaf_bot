@@ -222,7 +222,7 @@ void PidContoller_L(float goal, float curr, float dt, double error_rat)
     //std::cout<<pid_PWMl<<std::endl;
     pid_PWMl=constrain(pid_PWMl,-150,150);
     if(outputl <0){
-	Motor_Controller(1,true,pid_PWMl);    
+	    Motor_Controller(1,true,pid_PWMl);    
 	    
     }
     else{
@@ -538,10 +538,19 @@ int main(int argc, char** argv)
     odom_node.publish(to_odom);
     
     //RPM_Calculator();
+    if(goal_velL==0){
+      Motor_Controller(1, true, 0);
+    }else if(goal_velR==0){
+      Motor_Controller(2, true, 0);
+    }
+    else{
+
     PidContoller_L(goal_velL, cur_velL, 0.1,  0.01);
     PidContoller_R(goal_velR, cur_velR, 0.1,  0.01);
     ROS_INFO("cur %f ,%f",cur_velL,cur_velR);
     ROS_INFO("goal %f ,%f",goal_velL,goal_velR);
+    
+    }
     ros::spinOnce();
     loop_rate.sleep();
   }
