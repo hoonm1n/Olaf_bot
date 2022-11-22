@@ -72,43 +72,46 @@ void Theta_Distance(double Theta, int Turn_PWM, double Distance, int Go_PWM);
 int Limit_Function(int pwm);
 double RPM_Value1;
 double RPM_Value2;
-double w1;
-double w2;
-double cur_velL;
-double cur_velR;
+float w1;
+float w2;
+float cur_velL;
+float cur_velR;
 void RPM_Calculator();
 void Motor_View();
 
 
 //topic
 
-double goal_velL;
-double goal_velR;
-double kPl=0;
-double kIl=0;
-double kDl=0;
+float goal_velL;
+float goal_velR;
+float kPl=30;
+float kIl=5;
+float kDl=5;
 double Imaxl=0;
 double Dmaxl=10;
 int pid_PWMl=0;
 
-double kPr=0;
-double kIr=0;
-double kDr=0;
+double kPr=30;
+double kIr=5;
+double kDr=5;
 double Imaxr=0;
 double Dmaxr=10;
 int pid_PWMr=0;
 int ref_PWMr=0;
 
+double errorl_avg;
 double errorl=0;
 double error_dotl=0;
 double error_suml=0;
 double error_bfl=0;
 double prevl=0;
+double outputl=0;
 
-
+double errorr_avg=0;
 double errorr=0;
 double error_dotr=0;
 double error_sumr=0;
 double error_bfr=0;
 double prevr=0;
+double outputr=0;
 #endif // MOTOR_NODE_H

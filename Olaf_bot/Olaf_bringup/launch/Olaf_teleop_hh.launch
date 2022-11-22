@@ -2,6 +2,5 @@
 
   <node pkg="Olaf_teleop" type="Olaf_teleop_key" name="Olaf_teleop_keyboard"  output="screen"/>
   <node pkg="Olaf_bringup" type="velCal" name="velCal"  output="screen"/>
-  <node pkg="motor_test" type="motor_node" name="motor_node"  output="screen"/>
 
 </launch>

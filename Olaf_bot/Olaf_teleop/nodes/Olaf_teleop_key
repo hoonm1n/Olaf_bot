@@ -35,11 +35,11 @@ if os.name == 'nt':
 else:
   import tty, termios
 
-Olaf_MAX_LIN_VEL = 1.20
-Olaf_MAX_ANG_VEL = 1.80
+Olaf_MAX_LIN_VEL = 30.0
+Olaf_MAX_ANG_VEL = 30.0
 
-LIN_VEL_STEP_SIZE = 0.05
-ANG_VEL_STEP_SIZE = 0.1
+LIN_VEL_STEP_SIZE = 10.0
+ANG_VEL_STEP_SIZE = 10.0
 
 msg = """
 Control Your OMO Robot!

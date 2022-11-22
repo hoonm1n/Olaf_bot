@@ -117,11 +117,15 @@ void Interrupt2B(int pi, unsigned user_gpio, unsigned level, uint32_t tick)
 int Motor1_Encoder_Sum()
 {
   EncoderCounter1 = EncoderCounter1A + EncoderCounter1B;
+  EncoderCounter1A = 0;
+  EncoderCounter1B = 0;
   return EncoderCounter1;
 }
 int Motor2_Encoder_Sum()
 {
   EncoderCounter2 = EncoderCounter2A + EncoderCounter2B;
+  EncoderCounter2A = 0;
+  EncoderCounter2B = 0;
   return EncoderCounter2;
 }
 void Init_Encoder(void)
@@ -178,84 +182,101 @@ typedef struct pid
   double output=0;
 } pid;
 */
-void PidContoller_L(float goal, float curr, float dt, int error_rat)
+void PidContoller_L(float goal, float curr, float dt, double error_rat)
 {
-
-  float up,ui,ud,output =0;
+  
+  //std::cout << EncoderCounter1 << std::endl;
+  float up,ui,ud, outputl=0;
+  double filter = 7.9577e-3;
   pid_PWMl=0;
-  kPl = 1;
-  kDl = 0.1;
   errorl=goal-curr;
+  
   if (fabs(errorl) < error_rat) {errorl = 0;}
-  ROS_INFO("errorl : %f",errorl);
-  error_dotl = (errorl-error_bfl)/dt;
+  else if(fabs(errorl)< (error_rat*3)) 
+  { errorl_avg=(errorl+errorl_avg)/3;errorl=errorl_avg;
+  //std::cout<<"errorl"<<errorl<<std::endl;
+  //std::cout<<"errorl_avg"<<errorl_avg<<std::endl;
+  }
+ 
+  //ROS_INFO("errorl : %f",errorl);
+  error_dotl = (errorl-error_bfl)*(dt / (filter + dt));
   error_suml +=errorl*dt;
   
   up = kPl*errorl;
-  ui = kIl*error_suml;
   ud = kDl*error_dotl;
-  output =up + ui +ud+prevl;
+  ui = kIl*error_suml;
   
+   // ROS_INFO("up: %f" , up);
+  //  ROS_INFO("ui: %f" , ui);
+  //  ROS_INFO("ud: %f" , ud);
+  
+  
+  outputl =up+ ui +ud;
   error_bfl=errorl;
- 
-    
-    pid_PWMl = fabs(output);
-    ROS_INFO("pid_PWMl: %d" , pid_PWMl);
-    if(output <0){
-	Motor_Controller(1,false,pid_PWMl);    
+  outputl=outputl+prevl;
+  //std::cout<<prevl<<std::endl;
+  
+  
+    pid_PWMl = fabs(outputl);
+    //ROS_INFO("pid_PWMl: %d" , pid_PWMl);
+    //std::cout<<pid_PWMl<<std::endl;
+    pid_PWMl=constrain(pid_PWMl,-150,150);
+    if(outputl <0){
+	Motor_Controller(1,true,pid_PWMl);    
 	    
     }
     else{
-    	Motor_Controller(1,true,pid_PWMl);
+    	Motor_Controller(1,false,pid_PWMl);
     }
-    prevl=constrain(pid_PWMl,-255,255);
-
+    //prevl=constrain(outputl,-goal*5,goal*5);
+    prevl = outputl;
 }
 
-void PidContoller_R(float goal, float curr, float dt, int error_rat)
+void PidContoller_R(float goal, float curr, float dt, double error_rat)
 {
-
-  float up,ui,ud,output =0;
-  kPr = 1;
-  kDr = 0.1;
+  
+  std::cout << EncoderCounter2 << std::endl;
+  float up,ui,ud,outputr=0;
   pid_PWMr=0;
   errorr=goal-curr;
   if (fabs(errorr) < error_rat) {errorr = 0;}
+  else if(fabs(errorr)< (error_rat*10)) 
+  {
+  std::cout<<"errorr"<<errorr<<std::endl; 
+  errorr=(errorr+errorr_avg)/3;errorr_avg=errorr;
+  std::cout<<"errorr_avg"<<errorr_avg<<std::endl;
+  }
   ROS_INFO("errorr : %f",errorr);
-  error_dotr = (errorr-error_bfr)/dt;
+  double filter = 15.9155e-3;
+  error_dotr = (errorr-error_bfr)*(dt / (filter + dt)) ;
   error_sumr +=errorr*dt;
   
   up = kPr*errorr;
   ui = kIr*error_sumr;
   ud = kDr*error_dotr;
-  output =up + ui +ud+prevr;
   
+  
+    ROS_INFO("up: %f" , up);
+    ROS_INFO("ui: %f" , ui);
+    ROS_INFO("ud: %f" , ud);
+    
+  outputr =up + ui +ud;
   error_bfr=errorr;
+  outputr = outputr+prevr;
  
     
-    pid_PWMr = fabs(output);
-    if(errorr=0){
-    ref_PWMr=pid_PWMr;
-   	 if(output <0){
-		Motor_Controller(2,false,ref_PWMr);    
-	    
-    	}
-  	  else{
-    		Motor_Controller(2,true,ref_PWMr);
-   	 }
-   	 prevr=constrain(ref_PWMr,-255,255);
-    }
-    else{
-    	ROS_INFO("pid_PWMr: %d" , pid_PWMr);
-    	if(output <0){
+    pid_PWMr = fabs(outputr);
+    pid_PWMr=constrain(pid_PWMr,-150,150);
+    ROS_INFO("pid_PWMr: %d" , pid_PWMr);
+    if(outputr <0){
 		Motor_Controller(2,false,pid_PWMr);    
 	    
-    	}
-   	 else{
+    }
+    else{
     		Motor_Controller(2,true,pid_PWMr);
-    	}
-    	prevr=constrain(pid_PWMr,-255,255);
-	}
+    }
+    //prevr=constrain(outputr,-goal*5,goal*5);
+    prevr = outputr;
 }
 
 
@@ -419,19 +440,31 @@ int Limit_Function(int pwm)
   else output = pwm;
   return output;
 }
-void RPM_Calculator()
-{
+void RPM_Calculator(){
+  
   RPM_Value1 = (EncoderSpeedCounter1*(60*Control_cycle))/(Encoder_resolution*4);
   w1=(RPM_Value1*2*PI/60);
-  cur_velL=Wheel_radius*w1;
+  //cur_velL=Wheel_radius*w1/100;
+  cur_velL = (EncoderCounter1) * (2 * 3.14 * Wheel_radius) * Control_cycle / (Encoder_resolution * 4) /100;
   EncoderSpeedCounter1 = 0;
   RPM_Value2 = (EncoderSpeedCounter2*(60*Control_cycle))/(Encoder_resolution*4);
   w2=(RPM_Value2*2*PI/60);
-  cur_velR=Wheel_radius*w2;
+  //cur_velR=Wheel_radius*w2;
+  cur_velR = (EncoderCounter2) * (2 * 3.14 * Wheel_radius) * Control_cycle / (Encoder_resolution * 4) /100;
   EncoderSpeedCounter2 = 0;
+  //std::cout << cur_velL << cur_velR << std::endl;
+  
+  //EncoderCounter1A = 0;
+  //EncoderCounter1B = 0;
+  //EncoderCounter2A = 0;
+  //EncoderCounter2B = 0;
 }
+
 void Motor_View()
 {
+
+  Motor1_Encoder_Sum();
+  Motor2_Encoder_Sum();
 	RPM_Calculator();
 	printf("\033[2J");
 	printf("\033[1;1H");
@@ -439,8 +472,8 @@ void Motor_View()
 	printf("Encoder1B : %5d  ||  Encoder2B : %5d\n", EncoderCounter1B, EncoderCounter2B);
 	printf("RPM1 : %10.0f    ||  RPM2 : %10.0f\n", RPM_Value1, RPM_Value2);
 	printf("W1   : %10.0f    ||  W2 :%10.0f\n",w1,w2);
-  	printf("velL : %10.0f    ||  velR: %10.0f\n",cur_velL,cur_velR);    //출력되라~
-	printf("goalL: %10.0f    ||  goalR: %10.0f\n\n",goal_velL,goal_velR);
+  	printf("velL :     %f    ||  velR: %f\n",cur_velL,cur_velR);    //출력되라~
+	printf("goalL:     %f    ||  goalR: %f\n\n",goal_velL,goal_velR);
 	printf("PWM1 : %10.0d    ||  PWM2 : %10.0d\n", current_PWM1, current_PWM2);
 	printf("DIR1 :%10.0d     ||  DIR2 :%10.0d\n", current_Direction1, current_Direction2);
 	printf("Acc  :%10.0d\n", acceleration);
@@ -450,25 +483,34 @@ void Motor_View()
 void goalvelCallback(const motor_test::To_odom::ConstPtr& msg){
 	goal_velL = msg->velL;
 	goal_velR = msg->velR;
-	kPl=msg->pl;
-	kIl=msg->il;
-	kDl=msg->dl;
-	kPr=msg->pr;
-	kPr=msg->pr;
-	kIr=msg->ir;
-	kDr=msg->dr;
+	//kPl=msg->pl;
+	//kIl=msg->il;
+	//kDl=msg->dl;
+	//kPr=msg->pr;
+	//kPr=msg->pr;
+	//kIr=msg->ir;
+	//kDr=msg->dr;
 }
-
+/*
 void pidCallback(const motor_test::PID::ConstPtr& msg){
-	kPl=msg->pl;
+	kPl=msg->pl;   
 	kIl=msg->il;
 	kDl=msg->dl;
+	
+	//30
+	//5
+	//10
 
 	kPr=msg->pr;
 	kIr=msg->ir;
 	kDr=msg->dr;
+	//40
+	//5
+	//5
+	
+	
 }
-
+*/
 
 int main(int argc, char** argv)
 {
@@ -479,12 +521,12 @@ int main(int argc, char** argv)
   ros::Publisher odom_node = nh.advertise<motor_test::To_odom>("wheel_vel",10);
   motor_test::To_odom to_odom;
   ros::Subscriber sub = nh.subscribe("goalvel",10,goalvelCallback);
-  ros::Subscriber sub_pid = nh.subscribe("pid_vel",10,pidCallback);
+  //ros::Subscriber sub_pid = nh.subscribe("pid_vel",10,pidCallback);
   //pid pidL;
   while(ros::ok())
   {
     //Motor_Controller(1, true, 50);
-    //Motor_Controller(2, true, 30);
+    //Motor_Controller(2, true, 50);
     //Accel_Controller(1, true, 100);
     //Accel_Controller(2, true, 100);
     //Switch_Turn_Example(100, 100);
@@ -495,9 +537,9 @@ int main(int argc, char** argv)
     to_odom.velR=cur_velR;
     odom_node.publish(to_odom);
     
-    
-    PidContoller_L(goal_velL, cur_velL, 0.1,  5);
-    PidContoller_R(goal_velR, cur_velR, 0.1,  8);
+    //RPM_Calculator();
+    PidContoller_L(goal_velL, cur_velL, 0.1,  0.01);
+    PidContoller_R(goal_velR, cur_velR, 0.1,  0.01);
     ROS_INFO("cur %f ,%f",cur_velL,cur_velR);
     ROS_INFO("goal %f ,%f",goal_velL,goal_velR);
     ros::spinOnce();
