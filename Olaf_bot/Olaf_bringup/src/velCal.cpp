@@ -1,7 +1,7 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include <Olaf_bringup/To_odom.h>
-#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/Twist.h>
 
 double vel_x = 0;
@@ -21,7 +21,7 @@ void CmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     vel_th = msg->angular.z;
 }
 
-void OdomCallback(const nav_msgs::Odometry::ConstPtr& msg){
+void OdomCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg){
     x = msg->pose.pose.position.x;
     y = msg->pose.pose.position.y;
     th = msg->pose.pose.orientation.z;
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
   ros::Rate loop_rate(10);
   Olaf_bringup::To_odom to_odom;
-  nav_msgs::Odometry odom;
+  geometry_msgs::PoseWithCovarianceStamped odom;
   geometry_msgs::Twist cmd;
   
   int count = 0;
