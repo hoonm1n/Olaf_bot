@@ -58,7 +58,7 @@ int main(int argc, char** argv){
 
   ros::NodeHandle n;
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
-  ros::Subscriber sub = n.subscribe("wheel_vel", 10, wheelVelCallback);
+  ros::Subscriber sub = n.subscribe("wheel_vel", 50, wheelVelCallback);
   //tf::TransformBroadcaster odom_broadcaster;
 
   float x_covariance(20);
