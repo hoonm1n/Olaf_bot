@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/kim/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/kim/catkin_ws/src/learning_tf2/include/**",
+        "/home/kim/catkin_ws/src/olaf_bot/motor_test/include/**",
+        "/home/kim/catkin_ws/src/olaf_bot/robot_localization/include/**",
+        "/home/kim/catkin_ws/src/robot_setup_tf/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
