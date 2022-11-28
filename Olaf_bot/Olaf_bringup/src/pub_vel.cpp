@@ -59,8 +59,8 @@ int main(int argc, char **argv)
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
-    to_odom.velL = 0.01;
-    to_odom.velR = 0.01;
+    to_odom.velL = 0.1;
+    to_odom.velR = 0.1;
 
     /**
      * The publish() function is how you send messages. The parameter
