@@ -59,11 +59,11 @@ int main(int argc, char** argv){
   ros::NodeHandle n;
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
   ros::Subscriber sub = n.subscribe("wheel_vel", 50, wheelVelCallback);
-  //tf::TransformBroadcaster odom_broadcaster;
+  tf::TransformBroadcaster odom_broadcaster;
 
-  float x_covariance(20);
-	float y_covariance(20);
-	float yaw_covariance(50);		
+  // float x_covariance(20);
+	// float y_covariance(20);
+	// float yaw_covariance(50);		
  
   ros::Time current_time, last_time;
 
@@ -90,18 +90,18 @@ int main(int argc, char** argv){
     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
 
     // //first, we'll publish the transform over tf
-    // geometry_msgs::TransformStamped odom_trans;
-    // odom_trans.header.stamp = current_time;
-    // odom_trans.header.frame_id = "odom";
-    // odom_trans.child_frame_id = "base_footprint";
+    geometry_msgs::TransformStamped odom_trans;
+    odom_trans.header.stamp = current_time;
+    odom_trans.header.frame_id = "odom";
+    odom_trans.child_frame_id = "base_footprint";
 
-    // odom_trans.transform.translation.x = x;
-    // odom_trans.transform.translation.y = y;
-    // odom_trans.transform.translation.z = 0.0;
-    // odom_trans.transform.rotation = odom_quat;
+    odom_trans.transform.translation.x = x;
+    odom_trans.transform.translation.y = y;
+    odom_trans.transform.translation.z = 0.0;
+    odom_trans.transform.rotation = odom_quat;
 
     //send the transform
-    //odom_broadcaster.sendTransform(odom_trans);
+    odom_broadcaster.sendTransform(odom_trans);
 
     //next, we'll publish the odometry message over ROS
     nav_msgs::Odometry odom;
