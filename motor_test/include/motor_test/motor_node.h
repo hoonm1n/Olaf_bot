@@ -96,9 +96,9 @@ double Dmaxl=10;
 int pid_PWMl=0;
 
 
-double kPr=0;
-double kIr=0;
-double kDr=0;
+double kPr=20;
+double kIr=1;
+double kDr=5;
 double Imaxr=0;
 double Dmaxr=10;
 int pid_PWMr=0;

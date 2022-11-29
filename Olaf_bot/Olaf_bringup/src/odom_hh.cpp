@@ -67,7 +67,7 @@ int main(int argc, char** argv){
  
   ros::Time current_time, last_time;
 
-  ros::Rate r(1.0);
+  ros::Rate r(10.0);
   while(n.ok()){
 
     ros::spinOnce();              // check for incoming messages

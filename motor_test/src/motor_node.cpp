@@ -75,7 +75,7 @@ int Motor_Setup(void)
   current_PWM1 = 0;
   current_PWM2 = 0;
 
-  current_Direction1 = true;
+  current_Direction1 = false;
   current_Direction2 = true;
 
   acceleration = PWM_limit/(Acceleration_ratio);
@@ -281,7 +281,6 @@ void PidContoller_R(float goal, float curr, float dt, double error_rat)
     else{
     		Motor_Controller(2,true,pid_PWMr);
     }
-    //prevr=constrain(outputr,-goal*5,goal*5);
     
 }
 
@@ -426,20 +425,23 @@ void goalvelCallback(const motor_test::To_odom::ConstPtr& msg){
 }
 
 void pidCallback(const motor_test::PID::ConstPtr& msg){
-	kPl=msg->pl;   
-	kIl=msg->il;
-	kDl=msg->dl;
+	//kPl=msg->pl;   
+	//kIl=msg->il;
+	//kDl=msg->dl;
 	
-	//30
-	//5
+	//40
+	//1
 	//10
-
+/*
 	kPr=msg->pr;
 	kIr=msg->ir;
 	kDr=msg->dr;
-	//40
-	//5
-	//5
+	
+  
+  */
+  //20
+	//1
+	//10
 	
 	
 }
@@ -449,18 +451,18 @@ void PID(){
   Motor1_Encoder_Sum();
   Motor2_Encoder_Sum();
     if(goal_velL==0 && goal_velR==0){
-      Motor_Controller(1, true, 0);
+      Motor_Controller(1, false, 0);
       Motor_Controller(2, true, 0);
     }else if(goal_velL!=0 && goal_velR==0){
-      //PidContoller_L(goal_velL, cur_velL, 0.1,  0.01);
+      PidContoller_L(goal_velL, cur_velL, 0.1,  0.01);
       Motor_Controller(2, true, 0);
     }else if(goal_velL==0 && goal_velR!=0){
       PidContoller_R(goal_velR, cur_velR, 0.1,  0.01);
-      Motor_Controller(1, true, 0);
+      Motor_Controller(1, false, 0);
     }
     else{
-    //PidContoller_L(goal_velL, cur_velL, 0.1,  0.01);
-    PidContoller_R(goal_velR, cur_velR, 0.2,  0.01);
+    PidContoller_L(goal_velL, cur_velL, 0.1,  0.01);
+    PidContoller_R(goal_velR, cur_velR, 0.1,  0.01);
 
     
     }
@@ -485,19 +487,19 @@ int main(int argc, char** argv)
     //Accel_Controller(2, true, 100);
     //Switch_Turn_Example(100, 100);
     //Theta_Distance(180,100,30,110);
-    //Motor_View();
+    Motor_View();
     
     to_odom.velL=cur_velL;
     to_odom.velR=cur_velR;
     odom_node.publish(to_odom);
     
-    RPM_Calculator();
+    //RPM_Calculator();
     PID();
 
     ros::spinOnce();
     loop_rate.sleep();
   }
-  Motor_Controller(1, true, 0);
+  Motor_Controller(1, false, 0);
   Motor_Controller(2, true, 0);
   return 0;
 }
