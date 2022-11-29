@@ -38,6 +38,10 @@ int acceleration;
 
 //Interrupt_Setting
 void Interrupt_Setiing(void);
+volatile int tt_EncoderCounter1A=0;
+volatile int tt_EncoderCounter1B=0;
+volatile int tt_EncoderCounter2A=0;
+volatile int tt_EncoderCounter2B=0;
 volatile int EncoderCounter1;
 volatile int EncoderCounter2;
 volatile int EncoderCounter1A;
@@ -84,22 +88,23 @@ void Motor_View();
 
 float goal_velL;
 float goal_velR;
-float kPl=30;
-float kIl=5;
-float kDl=10;
+double kPl=40;
+double kIl=1;
+double kDl=10;
 double Imaxl=0;
 double Dmaxl=10;
 int pid_PWMl=0;
 
-double kPr=30;
-double kIr=5;
+
+double kPr=20;
+double kIr=1;
 double kDr=5;
 double Imaxr=0;
 double Dmaxr=10;
 int pid_PWMr=0;
 int ref_PWMr=0;
 
-double errorl_avg;
+double errorl_avg=0;
 double errorl=0;
 double error_dotl=0;
 double error_suml=0;

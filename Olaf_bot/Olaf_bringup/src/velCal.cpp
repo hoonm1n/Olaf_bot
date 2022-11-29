@@ -1,6 +1,7 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include <Olaf_bringup/To_odom.h>
+#include <math.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/Twist.h>
 
@@ -12,13 +13,14 @@ double th = 0.1;
 double vel_r = 0;
 double vel_l = 0;
 double L = 0.4104;
-
+double pi = M_PI;
 
 ros::Time current_time, last_time;
 
 void CmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     vel_x = msg->linear.x;
     vel_th = msg->angular.z;
+    vel_th = vel_th*(pi/180);
 }
 
 void OdomCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg){
