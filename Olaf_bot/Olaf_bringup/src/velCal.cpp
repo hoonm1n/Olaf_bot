@@ -18,9 +18,9 @@ ros::Time current_time, last_time;
 
 void CmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     vel_x = msg->linear.x;
-    vel_x = -vel_x;
+    //vel_x = -vel_x;
     vel_th = msg->angular.z;
-    vel_th = -vel_th;
+    //vel_th = -vel_th;
 }
 
 void OdomCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg){

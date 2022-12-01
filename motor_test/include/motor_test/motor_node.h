@@ -88,17 +88,17 @@ void Motor_View();
 
 float goal_velL;
 float goal_velR;
-double kPl=40;
-double kIl=1;
-double kDl=10;
+double kPl=40;   //40
+double kIl=0.1;       //1
+double kDl=10;      //10
 double Imaxl=0;
 double Dmaxl=10;
 int pid_PWMl=0;
 
 
-double kPr=20;
-double kIr=1;
-double kDr=5;
+double kPr=40;
+double kIr=0.1;
+double kDr=15;
 double Imaxr=0;
 double Dmaxr=10;
 int pid_PWMr=0;
