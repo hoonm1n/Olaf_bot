@@ -90,6 +90,14 @@ target_link_libraries(pub_vel ${catkin_LIBRARIES})
 add_executable(velCal src/velCal.cpp)
 add_dependencies(velCal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(velCal ${catkin_LIBRARIES})
+
+add_executable(odom_sh src/odom_sh.cpp)
+add_dependencies(odom_sh ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(odom_sh ${catkin_LIBRARIES})
+
+add_executable(velCal_1 src/velCal_1.cpp)
+add_dependencies(velCal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(velCal_1 ${catkin_LIBRARIES})
 ################################################################################
 # Test
 ################################################################################

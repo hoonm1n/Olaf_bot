@@ -32,8 +32,8 @@ void Update_Odom(double dv_r, double dv_l){
   double dt = (current_time - last_time).toSec(); //sub주기로 타임스텝 맞춰야함
   last_time = current_time;
 
-  ds_r = dv_r*0.1;
-  ds_l = dv_l*0.1;
+  ds_r = dv_r*dt;
+  ds_l = dv_l*dt;
   ROS_INFO("send dt = %f", dt);
 
   //얼마나 움직였는 지에 대한 설정
@@ -57,7 +57,7 @@ int main(int argc, char** argv){
   ros::init(argc, argv, "odometry_publisher");
 
   ros::NodeHandle n;
-  ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
+  ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 10);
   ros::Subscriber sub = n.subscribe("wheel_vel", 10, wheelVelCallback);
   tf::TransformBroadcaster odom_broadcaster;
 
