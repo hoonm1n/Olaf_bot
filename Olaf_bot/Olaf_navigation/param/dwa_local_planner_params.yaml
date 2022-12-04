@@ -11,7 +11,7 @@ DWAPlannerROS:
   max_trans_vel: 0.2
   min_trans_vel: 0.04
 
-  max_rot_vel: 0.2
+  max_rot_vel: 0.4
   min_rot_vel: 0.04
 
   acc_lim_x: 0.4
