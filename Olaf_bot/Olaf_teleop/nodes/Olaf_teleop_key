@@ -36,7 +36,7 @@ else:
   import tty, termios
 
 Olaf_MAX_LIN_VEL = 0.3
-Olaf_MAX_ANG_VEL = 0.3
+Olaf_MAX_ANG_VEL = 1.0
 
 LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.1

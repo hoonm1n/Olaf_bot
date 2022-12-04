@@ -1,6 +1,8 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "std_msgs/Bool.h"
 #include <Olaf_bringup/To_odom.h>
+#include <math.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/Twist.h>
 
@@ -12,19 +14,30 @@ double th = 0.1;
 double vel_r = 0;
 double vel_l = 0;
 double L = 0.4104;
-
-
+double pi = M_PI;
+bool laser = false;
 ros::Time current_time, last_time;
 
 void CmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     vel_x = msg->linear.x;
     vel_th = msg->angular.z;
+    vel_th = vel_th*(pi/180);
+
+    if(laser == true){
+      vel_x = 0;
+      vel_th = 0;
+    }
 }
 
 void OdomCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg){
     x = msg->pose.pose.position.x;
     y = msg->pose.pose.position.y;
     th = msg->pose.pose.orientation.z;
+
+}
+
+void LaserCallback(const std_msgs::Bool::ConstPtr& msg){
+    laser = msg->data;
 }
 
 void Cal_Vel(float vel_x, float vel_th){
@@ -51,7 +64,7 @@ int main(int argc, char **argv)
   ros::Publisher odom_node = n.advertise<Olaf_bringup::To_odom>("goalvel", 10);
   ros::Subscriber sub_cmdVel = n.subscribe("cmd_vel", 10, CmdVelCallback);
   ros::Subscriber sub_odom = n.subscribe("amcl_pose", 10, OdomCallback);
-
+  ros::Subscriber Dan_laser = n.subscribe("Dan_laser", 10, LaserCallback);
   ros::Rate loop_rate(10);
   Olaf_bringup::To_odom to_odom;
   geometry_msgs::PoseWithCovarianceStamped odom;

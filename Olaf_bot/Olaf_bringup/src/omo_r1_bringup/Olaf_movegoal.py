@@ -49,6 +49,10 @@ def move_to(goal_point):
 def goal_def(arr_room):
     goal_test = GoalPose()
     error = 0.1
+    
+def first_Place():
+    
+    
 
     for room in arr_room:
         if room == 101:
@@ -69,12 +73,6 @@ def goal_def(arr_room):
             goal_test.y = 0.651883785386
             goal_test.z = 0.213383708578
             goal_test.w = 0.976968478788
-        elif room == 104:
-            rospy.loginfo("104")
-            goal_test.x = 1.75060760178
-            goal_test.y = -0.279016830127
-            goal_test.z = 0.657537242689
-            goal_test.w = 0.753422042733
         
         move_to(goal_test)
 
