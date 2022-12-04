@@ -65,8 +65,8 @@ int main(int argc, char **argv)
   {
  
     Cal_Vel(vel_x, vel_th);
-    to_odom.velL = vel_r;
-    to_odom.velR = vel_l;
+    to_odom.velL = vel_l;
+    to_odom.velR = vel_r;
 
     odom_node.publish(to_odom);
 
