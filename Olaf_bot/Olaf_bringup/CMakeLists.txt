@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   tf
   #usb_cam
+  std_srvs
   Olaf_description
   message_generation
 )
@@ -30,6 +31,7 @@ add_message_files(
 add_service_files(
   FILES
   ResetOdom.srv
+  
 )
 
 

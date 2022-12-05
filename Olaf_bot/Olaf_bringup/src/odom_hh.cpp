@@ -3,6 +3,7 @@
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/String.h>
 #include <Olaf_bringup/To_odom.h>
+#include "std_srvs/Empty.h"
 
 double x = 0.0;
 double y = 0.0;
@@ -24,7 +25,9 @@ double vth = 0;
 
 double dv_r = 0;
 double dv_l = 0;
+int costmap_time = 0;
 
+std_srvs::Empty srv;
 ros::Time current_time, last_time;
 
 void Update_Odom(double dv_r, double dv_l){
@@ -60,6 +63,7 @@ int main(int argc, char** argv){
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 10);
   ros::Subscriber sub = n.subscribe("wheel_vel", 10, wheelVelCallback);
   tf::TransformBroadcaster odom_broadcaster;
+  ros::ServiceClient clear_costmaps_client = n.serviceClient<std_srvs::Empty>("/move_base/clear_costmaps");
 
   // float x_covariance(20);
 	// float y_covariance(20);
@@ -73,7 +77,16 @@ int main(int argc, char** argv){
     ros::spinOnce();              // check for incoming messages
 
     Update_Odom(dv_r, dv_l);
- 
+    if(costmap_time == 50){
+      if(clear_costmaps_client.call(srv))
+			{
+				ROS_INFO("CLEAR COSTMAP");
+        costmap_time = 0;
+			}
+    }
+    else{
+      costmap_time++;
+    }
 
     //compute odometry in a typical way given the velocities of the robot
     x += delta_x;
