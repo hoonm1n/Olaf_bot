@@ -27,7 +27,6 @@ void OdomCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg)
     x = msg->pose.pose.position.x;
     y = msg->pose.pose.position.y;
     th = msg->pose.pose.orientation.z;
-    th = th*(180/pi);
 }
 
 void Cal_Vel(float vel_x, float vel_th){
