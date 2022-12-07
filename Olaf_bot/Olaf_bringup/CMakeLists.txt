@@ -77,6 +77,8 @@ catkin_install_python(PROGRAMS
   nodes/omo_r1_motor_node.py
   src/olaf_push.py
   src/olaf_movegoal.py
+  src/tu_listener.py
+  src/tu_talker.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

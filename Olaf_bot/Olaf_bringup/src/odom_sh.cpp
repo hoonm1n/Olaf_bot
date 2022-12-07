@@ -7,6 +7,8 @@
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 #include <Olaf_bringup/To_odom.h>
+#include "std_srvs/Empty.h"
+
 
 #include <string>
 #include <vector>
@@ -17,6 +19,7 @@
  
 const double math_pi = 3.141592;
 const double wheel_base = 0.4104;
+std_srvs::Empty srv;
 
 geometry_msgs::Pose2D able_odom;
 nav_msgs::Odometry odom;
@@ -110,7 +113,7 @@ int main(int argc, char **argv)
 
     ros::Publisher pub_able_odom = nh.advertise<nav_msgs::Odometry>("odom", 10);
     tf::TransformBroadcaster odom_broadcaster;
-
+    ros::ServiceClient clear_costmaps_client = n.serviceClient<std_srvs::Empty>("/move_base/clear_costmaps");
     // ros::Subscriber sub_mobile_vel_R = nh.subscribe("/mobile/velR", 10, VelRCallback);
     // ros::Subscriber sub_mobile_vel_L = nh.subscribe("/mobile/velL", 10, VelLCallback);
     ros::Subscriber sub = nh.subscribe("wheel_vel", 10, wheelVelCallback);
@@ -123,7 +126,17 @@ int main(int argc, char **argv)
         CalcAblePosition();
         odom_broadcaster.sendTransform(odom_trans);
         pub_able_odom.publish(odom);
-        
+        if(costmap_time == 50){
+            if(clear_costmaps_client.call(srv))
+                {
+                    ROS_INFO("CLEAR COSTMAP");
+                    ROS_INFO("-------------");
+                    costmap_time = 0;
+                }
+            }
+        else{
+            costmap_time++;
+        }
         loop_rate.sleep();
         ros::spinOnce();
     }

@@ -81,6 +81,7 @@ int main(int argc, char** argv){
       if(clear_costmaps_client.call(srv))
 			{
 				ROS_INFO("CLEAR COSTMAP");
+        ROS_INFO("-------------");
         costmap_time = 0;
 			}
     }
