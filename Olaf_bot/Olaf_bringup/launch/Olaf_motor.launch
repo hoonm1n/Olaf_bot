@@ -13,4 +13,7 @@
   <node pkg="Olaf_bringup" type="velCal" name="velCal" output="screen">
       <param name="modelName" value="r1"/>
   </node>
+    <node pkg="Olaf_bringup" type="costmap_clear" name="costmap_clear" output="screen">
+      <param name="modelName" value="r1"/>
+  </node>
 </launch>

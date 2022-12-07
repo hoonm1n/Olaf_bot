@@ -32,7 +32,6 @@ add_service_files(
   FILES
   ResetOdom.srv
   request_to_motor.srv
-  
 )
 
 
@@ -105,6 +104,10 @@ target_link_libraries(odom_sh ${catkin_LIBRARIES})
 add_executable(velCal_1 src/velCal_1.cpp)
 add_dependencies(velCal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(velCal_1 ${catkin_LIBRARIES})
+
+add_executable(costmap_clear src/costmap_clear.cpp)
+add_dependencies(costmap_clear ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(costmap_clear ${catkin_LIBRARIES})
 ################################################################################
 # Test
 ################################################################################
