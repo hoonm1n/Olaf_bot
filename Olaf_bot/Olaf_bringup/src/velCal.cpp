@@ -12,7 +12,7 @@ double y = 0.0;
 double th = 0.1;
 double vel_r = 0;
 double vel_l = 0;
-double L = 0.4104;
+double L = 0.4004;
 double pi = M_PI;
 
 double left_speed_out = 0;

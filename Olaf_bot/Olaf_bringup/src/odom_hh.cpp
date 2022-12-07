@@ -10,7 +10,7 @@ double y = 0.0;
 double th = 0.0;
   
 double ds = 0;  //로봇의 주행 거리
-double L = 0.4104;  //차체의 길이
+double L = 0.4004;  //차체의 길이
 
 double delta_th = 0;
 double delta_x = 0;
