@@ -4,7 +4,7 @@
   <!-- <node pkg="Olaf_bringup" type="pub_vel" name="pub_vel" output="screen">
       <param name="modelName" value="r1"/>
   </node> -->
-  <node pkg="Olaf_bringup" type="odom_hh" name="odom_hh" output="screen">
+  <node pkg="Olaf_bringup" type="odom_sh" name="odom_hh" output="screen">
       <param name="port" value="$(arg set_port)"/>
       <param name="baud" value="115200"/>
       <param name="odom_mode" value="$(arg set_odom_mode)"/>

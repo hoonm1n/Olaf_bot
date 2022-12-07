@@ -11,6 +11,7 @@
 #include <cmath>
 #define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
 
+// int checking_hh = 0;
 void Text_Input(void)
 {
   int i = 0;
@@ -406,7 +407,6 @@ void RPM_Calculator(){
 
 void Motor_View()
 {
-	
 	printf("\033[2J");
 	printf("\033[1;1H");
 	printf("Encoder1A : %5d  ||  Encoder2A : %5d\n", tt_EncoderCounter1A, tt_EncoderCounter2A);
@@ -490,6 +490,12 @@ int main(int argc, char** argv)
     //Accel_Controller(2, true, 100);
     //Switch_Turn_Example(100, 100);
     //Theta_Distance(180,100,30,110);
+    // if(checking_hh == 0){
+    //   Theta_Turn(float(180), 50);
+    //   checking_hh++;
+
+    // }
+    // Theta_Turn(float(1), 50);
     Motor_View();
     
     to_odom.velL=cur_velL;
