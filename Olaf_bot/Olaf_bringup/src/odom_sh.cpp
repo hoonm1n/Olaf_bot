@@ -24,7 +24,7 @@ int costmap_time = 0;
 
 geometry_msgs::Pose2D able_odom;
 nav_msgs::Odometry odom;
-geometry_msgs::TransformStamped odom_trans;
+//geometry_msgs::TransformStamped odom_trans;
 float dt;
 ros::Time current_time, last_time;
 
@@ -64,14 +64,14 @@ void CalcAblePosition()
 
     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(able_odom.theta);
 
-    odom_trans.header.stamp = current_time;
-    odom_trans.header.frame_id = "odom";
-    odom_trans.child_frame_id = "base_footprint";
+    // odom_trans.header.stamp = current_time;
+    // odom_trans.header.frame_id = "odom";
+    // odom_trans.child_frame_id = "base_footprint";
 
-    odom_trans.transform.translation.x = able_odom.x;
-    odom_trans.transform.translation.y = able_odom.y;
-    odom_trans.transform.translation.z = 0.0;
-    odom_trans.transform.rotation = odom_quat;
+    // odom_trans.transform.translation.x = able_odom.x;
+    // odom_trans.transform.translation.y = able_odom.y;
+    // odom_trans.transform.translation.z = 0.0;
+    // odom_trans.transform.rotation = odom_quat;
 
     odom.header.stamp = current_time;
     odom.header.frame_id = "odom";
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     ros::Rate loop_rate(10);
 
     ros::Publisher pub_able_odom = nh.advertise<nav_msgs::Odometry>("odom", 10);
-    tf::TransformBroadcaster odom_broadcaster;
+    //tf::TransformBroadcaster odom_broadcaster;
     //ros::ServiceClient clear_costmaps_client = nh.serviceClient<std_srvs::Empty>("/move_base/clear_costmaps");
     // ros::Subscriber sub_mobile_vel_R = nh.subscribe("/mobile/velR", 10, VelRCallback);
     // ros::Subscriber sub_mobile_vel_L = nh.subscribe("/mobile/velL", 10, VelLCallback);
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
     while (ros::ok())
     {
         CalcAblePosition();
-        odom_broadcaster.sendTransform(odom_trans);
+        //odom_broadcaster.sendTransform(odom_trans);
         pub_able_odom.publish(odom);
         // if(costmap_time == 50){
         //     if(clear_costmaps_client.call(srv))
