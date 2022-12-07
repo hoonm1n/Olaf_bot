@@ -20,8 +20,8 @@ class state:
 def Box_client(open):
     rospy.wait_for_service('req_box')
     try:
-        loadBox = rospy.ServiceProxy('req_box', request_to_motor)
-        resp1 = loadBox(open)
+        req_motor = rospy.ServiceProxy('req_box', request_to_motor)
+        resp1 = req_motor(open)
         return resp1.closed
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)

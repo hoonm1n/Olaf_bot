@@ -53,33 +53,34 @@ def goal_def(arr_room):
     for room in arr_room:
         if room == 101:
             rospy.loginfo("101")
-            goal_test.x = 11.937876899895537
-            goal_test.y = -0.6703138024584256
-            goal_test.z = -0.7821922028081747
-            goal_test.w = 0.6230372042391171
+            goal_test.x = 18.45667943936049
+            goal_test.y = -5.3077037896153545
+            goal_test.z = -0.001595205785840964
+            goal_test.w = 0.999998727658441
         elif room == 102:
             rospy.loginfo("102")
-            goal_test.x = 4.961755413880521
-            goal_test.y = 17.183735783212622
-            goal_test.z = -0.003730698014764473
-            goal_test.w = 0.999993040921947
+            goal_test.x = 9.288118771493941
+            goal_test.y = 27.959518284393393
+            goal_test.z = 0.7159392231324673
+            goal_test.w = 0.6981626091251802
         elif room == 103:
             rospy.loginfo("103")
-            goal_test.x = 4.961755413880521
-            goal_test.y = 17.183735783212622
-            goal_test.z = -0.003730698014764473
-            goal_test.w = 0.999993040921947
+            goal_test.x = 9.288118771493941
+            goal_test.y = 27.959518284393393
+            goal_test.z = 0.7159392231324673
+            goal_test.w = 0.6981626091251802
         elif room == 104:
             rospy.loginfo("104")
-            goal_test.x = 4.961755413880521
-            goal_test.y = 17.183735783212622
-            goal_test.z = -0.003730698014764473
-            goal_test.w = 0.999993040921947
+            goal_test.x = 9.288118771493941
+            goal_test.y = 27.959518284393393
+            goal_test.z = 0.7159392231324673
+            goal_test.w = 0.6981626091251802
         
         move_to(goal_test)
 
         while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
             hi = 1
+        
             
 
 if __name__=='__main__':
