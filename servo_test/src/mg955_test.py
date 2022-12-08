@@ -32,6 +32,7 @@ servo_max = 600  # Max pulse length out of 4096
 class hh:
     def __init__(self):
         global IR
+        global start
 
 def handle_add_two_ints(req):
     print(req.open)
@@ -41,7 +42,7 @@ def handle_add_two_ints(req):
         b = True
     else:                       #second
         print("2")
-        #move_2()
+        move_2()
         b = False
     return b
 
@@ -139,8 +140,65 @@ def move_1():
             #wantpwm=wantpwm+10
             count=count+1
             print("count ",count)
-    
 
+def dynamixel(start):
+    rospy.wait_for_service('servo1_to_dynamic')
+    try:
+        add_two_ints = rospy.ServiceProxy('servo1_to_dynamic', sig_dy)
+        resp1 = add_two_ints(open)
+        return resp1.closed
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+
+def move_2():
+    pwm.set_pwm_freq(60)
+    count=0
+    wantpwm = 180
+    print('Moving servo on channel, press Ctrl-C to quit...')
+
+    while not rospy.is_shutdown():     ##servo1 open
+        
+        if count == 100 :
+            pwm.set_all_pwm(0, 0)
+            count=500
+            print("reset count")
+        elif count ==500:
+            break
+        elif count <100:
+            pwm.set_pwm(0, 0, servo_min)
+            rospy.sleep(0.01)
+            pwm.set_pwm(13, 0, servo_min)
+            rospy.sleep(0.01)
+            
+            count=count+1
+            print("count ",count)
+    
+    print("cover open") 
+    print("IR ",hh.IR)
+    count=0         #reset
+   
+    
+    dynamixel(True)
+    
+    rospy.sleep(1)
+    print("boxload is complete")
+
+    while not rospy.is_shutdown(): #servo1 closed
+        
+        if count == 100 :
+            pwm.set_all_pwm(0, 0)
+            count=500
+            print("reset count")
+        elif count ==500:
+            break
+        elif count <100:
+            pwm.set_pwm(0, 0, servo_max)
+            rospy.sleep(0.01)
+            pwm.set_pwm(13, 0, servo_max)
+            rospy.sleep(0.01)
+
+            count=count+1
+            print("count ",count)
 
     
         
