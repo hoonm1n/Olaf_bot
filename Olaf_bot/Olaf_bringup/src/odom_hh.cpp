@@ -3,14 +3,13 @@
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/String.h>
 #include <Olaf_bringup/To_odom.h>
-#include "std_srvs/Empty.h"
 
 double x = 0.0;
 double y = 0.0;
 double th = 0.0;
   
 double ds = 0;  //로봇의 주행 거리
-double L = 0.4004;  //차체의 길이
+double L = 0.4104;  //차체의 길이
 
 double delta_th = 0;
 double delta_x = 0;
@@ -25,18 +24,17 @@ double vth = 0;
 
 double dv_r = 0;
 double dv_l = 0;
-int costmap_time = 0;
 
-std_srvs::Empty srv;
 ros::Time current_time, last_time;
 
 void Update_Odom(double dv_r, double dv_l){
   current_time = ros::Time::now();
   double dt = (current_time - last_time).toSec(); //sub주기로 타임스텝 맞춰야함
+  
   last_time = current_time;
 
-  ds_r = dv_r*dt;
-  ds_l = dv_l*dt;
+  ds_r = dv_r*0.1;
+  ds_l = dv_l*0.1;
   ROS_INFO("send dt = %f", dt);
 
   //얼마나 움직였는 지에 대한 설정
@@ -44,7 +42,7 @@ void Update_Odom(double dv_r, double dv_l){
   delta_th = (ds_r-ds_l)/L;
 
   delta_x = ds*cos(th+delta_th/2);
-  delta_y = ds*sin(th+delta_th/2);
+  delta_y = ds*sin(th+delta_th/2);                
 
   vx = delta_x/dt;
   vy = delta_y/dt;
@@ -63,7 +61,6 @@ int main(int argc, char** argv){
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 10);
   ros::Subscriber sub = n.subscribe("wheel_vel", 10, wheelVelCallback);
   tf::TransformBroadcaster odom_broadcaster;
-  ros::ServiceClient clear_costmaps_client = n.serviceClient<std_srvs::Empty>("/move_base/clear_costmaps");
 
   // float x_covariance(20);
 	// float y_covariance(20);
@@ -77,17 +74,7 @@ int main(int argc, char** argv){
     ros::spinOnce();              // check for incoming messages
 
     Update_Odom(dv_r, dv_l);
-    if(costmap_time == 50){
-      if(clear_costmaps_client.call(srv))
-			{
-				ROS_INFO("CLEAR COSTMAP");
-        ROS_INFO("-------------");
-        costmap_time = 0;
-			}
-    }
-    else{
-      costmap_time++;
-    }
+ 
 
     //compute odometry in a typical way given the velocities of the robot
     x += delta_x;

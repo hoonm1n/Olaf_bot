@@ -62,7 +62,7 @@ sensor_msgs::Imu imu_data_msg;
 //tf_prefix add
 std::string tf_prefix_;
 //single_used TF
-bool m_bSingle_TF_option = true;
+bool m_bSingle_TF_option = false;
 
 //IMU_service
 ros::ServiceServer all_data_reset_service;
@@ -387,7 +387,7 @@ int main (int argc, char** argv)
 				q.setRPY(_pIMU_data.dEuler_angle_Roll, _pIMU_data.dEuler_angle_Pitch, _pIMU_data.dEuler_angle_Yaw);
 				transform.setRotation(q);
 				//br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "base_link", "imu_link"));
-				br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), tf_prefix_ + "/base_footprint", tf_prefix_ + "imu_link"));
+				br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), tf_prefix_ + "/base_link", tf_prefix_ + "imu_link"));
 			}
 
 
