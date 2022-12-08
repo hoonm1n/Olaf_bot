@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     
     while (ros::ok())
     {
-        if(costmap_time == 50){
+        if(costmap_time == 100){
             if(clear_costmaps_client.call(srv))
                 {
                     ROS_INFO("CLEAR COSTMAP");
