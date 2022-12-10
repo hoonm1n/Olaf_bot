@@ -32,6 +32,7 @@ add_service_files(
   FILES
   ResetOdom.srv
   request_to_motor.srv
+  Appdata.srv
 )
 
 

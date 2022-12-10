@@ -11,11 +11,13 @@ import tf
 import numpy as np
 import time
 from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import String
 from Olaf_bringup.srv import request_to_motor
 import sys
 
 class state:
     con = 0
+    pubApp = "1"
 
 def Box_client(open):
     rospy.wait_for_service('req_box')
@@ -26,7 +28,8 @@ def Box_client(open):
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
 
-    
+
+#뜽인이 코드 쪽
 def loadBox():
     done = Box_client(1)
     # while(1):
@@ -81,45 +84,51 @@ def goal_def(arr_room):
     for room in arr_room:
         if room == 101:
             rospy.loginfo("101")
-            goal_test.x = -1.73096152587
-            goal_test.y = 0.651883785386
-            goal_test.z = 0.213383708578
-            goal_test.w = 0.976968478788
+            goal_test.x = 16.44415716658898
+            goal_test.y = 3.99825491348574
+            goal_test.z = -0.7082061215423147
+            goal_test.w = 0.7060057290206591
         elif room == 102:
             rospy.loginfo("102")
-            goal_test.x = 1.75060760178
-            goal_test.y = -0.279016830127
-            goal_test.z = 0.657537242689
-            goal_test.w = 0.753422042733
+            goal_test.x = 15.848046656509798
+            goal_test.y = -2.334541267218674
+            goal_test.z = -0.9999887525169443
+            goal_test.w = 0.004742872505715466
         elif room == 103:
             rospy.loginfo("103")
-            goal_test.x = -1.73096152587
-            goal_test.y = 0.651883785386
-            goal_test.z = 0.213383708578
-            goal_test.w = 0.976968478788
-        elif room == 104:
-            rospy.loginfo("104")
-            goal_test.x = 1.75060760178
-            goal_test.y = -0.279016830127
-            goal_test.z = 0.657537242689
-            goal_test.w = 0.753422042733
+            goal_test.x = 7.706090844535842
+            goal_test.y = 23.05292972382056
+            goal_test.z = 0.9998215006766188
+            goal_test.w = 0.018893564638628315
+        # elif room == 104:
+        #     rospy.loginfo("104")
+        #     goal_test.x = 1.75060760178
+        #     goal_test.y = -0.279016830127
+        #     goal_test.z = 0.657537242689
+        #     goal_test.w = 0.753422042733
         
         move_to(goal_test)
 
         if(state.con == 0):
             while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
                 hi = 1
+            state.pubApp = "2"
+            app_pub.publish(state.pubApp)
             loadBox
 
         elif(state.con == 1):
             while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
                 hi = 1
+            state.pubApp = "3"
             giveBox
+            app_pub.publish(state.pubApp) 
 
         elif(state.con == 2):
             while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
                 hi = 1
             rospy.loginfo("finished!!")
+            state.pubApp = "4"
+            app_pub.publish(state.pubApp)
         
         state.con += 1
 
@@ -136,6 +145,7 @@ if __name__=='__main__':
     rospy.init_node('map_navigation_lis', anonymous=True)
     odom_sub = rospy.Subscriber('/amcl_pose', PoseWithCovarianceStamped, callback)
     tu_sub = rospy.Subscriber('room_info', Float32MultiArray, callbackRoom)
+    app_pub = rospy.Publisher('robot2app', String, queue_size=10)
     ac = actionlib.SimpleActionClient("move_base", MoveBaseAction)
     ac.wait_for_server() # !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
