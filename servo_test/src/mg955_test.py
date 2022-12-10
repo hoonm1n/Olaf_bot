@@ -13,7 +13,7 @@ import RPi.GPIO as GPIO
 import Adafruit_PCA9685
 
 from Olaf_bringup.srv import request_to_motor
-
+from dynamixel_sdk_examples.srv import sig_dy
 
 # Uncomment to enable debug output.
 #import logging
@@ -33,6 +33,7 @@ class hh:
     def __init__(self):
         global IR
         global start
+        global dy_start
 
 def handle_add_two_ints(req):
     print(req.open)
@@ -86,32 +87,25 @@ def callback(msg):
 def move_1():
     pwm.set_pwm_freq(60)
     count=0
-    wantpwm = 180
     print('Moving servo on channel, press Ctrl-C to quit...')
 
     while not rospy.is_shutdown():
         
-        if count == 100 :
-            #set_angle(0,0)
-            #set_angle(13,0)
+        if count == 40 :
+
             pwm.set_all_pwm(0, 0)
             count=500
             print("reset count")
         elif count ==500:
             break
-        elif count <100:
+        elif count <40:
             pwm.set_pwm(0, 0, servo_min)
             rospy.sleep(0.01)
             pwm.set_pwm(13, 0, servo_min)
             rospy.sleep(0.01)
-            #set_angle(13,wantpwm)
-            #rospy.sleep(0.01)
-            
-            #wantpwm=wantpwm+10
+
             count=count+1
-            print("count ",count)
-    #set_angle(0,0)
-    #set_angle(13,0)    
+            print("count ",count) 
     print("cover open") 
     print("IR ",hh.IR)
     count=0         #reset
@@ -125,46 +119,52 @@ def move_1():
 
     while not rospy.is_shutdown():
         
-        if count == 100 :
+        if count == 40 :
             pwm.set_all_pwm(0, 0)
             count=500
             print("reset count")
         elif count ==500:
             break
-        elif count <100:
+        elif count <40:
             pwm.set_pwm(0, 0, servo_max)
             rospy.sleep(0.01)
             pwm.set_pwm(13, 0, servo_max)
             rospy.sleep(0.01)
-            
-            #wantpwm=wantpwm+10
+
             count=count+1
             print("count ",count)
 
-def dynamixel(start):
+
+
+def dynamixel(data1):
+    print("dynamixel is running")
     rospy.wait_for_service('servo1_to_dynamic')
     try:
         add_two_ints = rospy.ServiceProxy('servo1_to_dynamic', sig_dy)
-        resp1 = add_two_ints(open)
-        return resp1.closed
+        
+        resp1 = add_two_ints(data1)
+        print("dynamixel is done")
+        return resp1.result1
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
+
+
 
 def move_2():
     pwm.set_pwm_freq(60)
     count=0
-    wantpwm = 180
+
     print('Moving servo on channel, press Ctrl-C to quit...')
 
-    while not rospy.is_shutdown():     ##servo1 open
+    while count<500:     ##servo1 open
         
-        if count == 100 :
+        if count == 40 :
             pwm.set_all_pwm(0, 0)
             count=500
             print("reset count")
         elif count ==500:
             break
-        elif count <100:
+        elif count <40:
             pwm.set_pwm(0, 0, servo_min)
             rospy.sleep(0.01)
             pwm.set_pwm(13, 0, servo_min)
@@ -174,43 +174,45 @@ def move_2():
             print("count ",count)
     
     print("cover open") 
-    print("IR ",hh.IR)
     count=0         #reset
    
     
-    dynamixel(True)
+    hh.dy_start =dynamixel(True)
+    while hh.dy_start==False:          #dynamixel is running
+        pwm.set_all_pwm(0, 0)
+        print("dy_start is False")
+    
     
     rospy.sleep(1)
+    
     print("boxload is complete")
-
-    while not rospy.is_shutdown(): #servo1 closed
+    count=0 
+    while count<500 : #servo1 closed
         
-        if count == 100 :
+        if count == 40 :
             pwm.set_all_pwm(0, 0)
             count=500
             print("reset count")
         elif count ==500:
             break
-        elif count <100:
+        elif count <40:
             pwm.set_pwm(0, 0, servo_max)
             rospy.sleep(0.01)
             pwm.set_pwm(13, 0, servo_max)
             rospy.sleep(0.01)
 
-            count=count+1
-            print("count ",count)
+        count=count+1
+        print("count ",count)
 
     
+    print("cover is closed")
         
 
 if __name__=='__main__':
     rospy.init_node('mg955_test', anonymous=True)
     hh.IR=False
+    hh.dy_start=False
     try:
         add_two_ints_server()
     except rospy.ROSInterruptException:
         pass
-       
-    	
-
-    
