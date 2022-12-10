@@ -28,6 +28,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(
   FILES
   request_to_motor.srv
+  sig_dy.srv
 )
 
 
