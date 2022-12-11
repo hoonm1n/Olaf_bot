@@ -22,17 +22,23 @@ def talker():
             tu_pub.publish(arr_room)
 
         rate.sleep()
-        
-def callbackAppdata(Appdata):
+
+def handle_add_two_ints(Appdata):
     roompose = Appdata.input1
     recievemethod = Appdata.input2
-
+    return "ok"
+    
+def add_two_ints_server():
+    rospy.init_node('add_two_ints_server')
+    s = rospy.Service('/Appdata', Appdata, handle_add_two_ints)
+    print("Ready to add two ints.")
+    
     
 if __name__ == '__main__':
-    odom_sub = rospy.Subscriber('/AppData', Appdata, callbackAppdata)
     try:
-        rospy.init_node('map_navigation_tal', anonymous=True)
+        add_two_ints_server()
         tu_pub = rospy.Publisher('room_info', Float32MultiArray, queue_size=10)
         talker()
+        rospy.spin()
     except rospy.ROSInterruptException:
         pass

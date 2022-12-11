@@ -132,20 +132,12 @@ def goal_def(arr_room):
         
         state.con += 1
 
-
-
-
-        
-
-+9
-
-
 if __name__=='__main__':
     current_pose = PoseWithCovarianceStamped()
     rospy.init_node('map_navigation_lis', anonymous=True)
     odom_sub = rospy.Subscriber('/amcl_pose', PoseWithCovarianceStamped, callback)
     tu_sub = rospy.Subscriber('room_info', Float32MultiArray, callbackRoom)
-    app_pub = rospy.Publisher('robot2app', String, queue_size=10)
+    app_pub = rospy.Publisher('robot2app', String, queue_size=1)
     ac = actionlib.SimpleActionClient("move_base", MoveBaseAction)
     ac.wait_for_server() # !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
