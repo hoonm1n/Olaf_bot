@@ -79,7 +79,7 @@ def move_to(goal_point):
 
 def goal_def(arr_room):
     goal_test = GoalPose()
-    error = 0.1
+    error = 0.5
 
     for room in arr_room:
         if room == 101:
