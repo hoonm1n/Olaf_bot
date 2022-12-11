@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="servo_test" type="IR" name="IR" output="screen">
+    </node>
+    <node pkg="servo_test" type="mg955_test" name="mg955_test" output="screen">
+    </node>
+    <node pkg="servo_test" type="servo2" name="servo2" output="screen">
+    </node>
+</launch>

@@ -6,11 +6,6 @@
   <arg name="set_port_imu" default="/dev/IMU"/>
   <arg name="set_joy_en" default="0"/>
  
-  
-  
-  <!-- <include file="$(find myahrs_driver)/launch/myahrs_driver.launch" />
-  -->
-
   <include file="$(find Olaf_bringup)/launch/Olaf_motor.launch">
     <arg name="set_port" value="$(arg set_port_motor)"/>
   </include>
@@ -23,9 +18,12 @@
   <include file="$(find Olaf_bringup)/launch/Olaf_imu.launch">
     <arg name="set_port" value="$(arg set_port_imu)"/>
   </include>
-
-
-  <include file="$(find robot_localization)/launch/ekf_template.launch">
-    
+  
+  <include file="$(find servo_test)/launch/servo_motor.launch">
   </include>
+
+  <node pkg="Olaf_bringup" type="olaf_push" name="olaf_push" output="screen">
+  </node>
+  <node pkg="Olaf_bringup" type="olaf_movegoal" name="olaf_movegoal" output="screen">
+  </node>
 </launch>

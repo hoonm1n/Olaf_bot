@@ -10,26 +10,6 @@ global recievemethod
 
 roompose = ""
 recievemethod = ""
-# class Input:
-#     def __init__(self):
-#         roompose 
-#         recievemethod
-
-# def talker():
-#     rate = rospy.Rate(10) # 10hz
-
-#     arr_room = Float32MultiArray()
-#     arr_room.data = [101, 102, 103]
-
-#     rospy.loginfo("When you press on 'k', your robot will go to the goal!!!")
-
-#     while not rospy.is_shutdown():
-#         print(recievemethod)
-#         if recievemethod == "2":
-#             rospy.loginfo("gogo!")
-#             tu_pub.publish(arr_room)
-
-#         rate.sleep()
 
 def handle_add_two_ints(Appdata):
     roompose = Appdata.input1
@@ -48,7 +28,6 @@ def handle_add_two_ints(Appdata):
     return "ok"
     
 def add_two_ints_server():
-    #rospy.init_node('add_two_ints_server')
     s = rospy.Service('/Appdata', Appdata, handle_add_two_ints)
     print("Ready to add two ints.")
     
@@ -61,7 +40,6 @@ if __name__ == '__main__':
     try:
         add_two_ints_server()
         tu_pub = rospy.Publisher('room_info', Float32MultiArray, queue_size=10)
-        #talker()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
