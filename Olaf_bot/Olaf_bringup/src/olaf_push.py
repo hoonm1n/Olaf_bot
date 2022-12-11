@@ -30,7 +30,7 @@ def handle_add_two_ints(Appdata):
     
 def add_two_ints_server():
     rospy.init_node('add_two_ints_server')
-    s = rospy.Service('/Appdata', Appdata, handle_add_two_ints)
+    s = rospy.Service('Appdata', Appdata, handle_add_two_ints)
     print("Ready to add two ints.")
     
     
