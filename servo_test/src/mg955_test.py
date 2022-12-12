@@ -114,7 +114,7 @@ def move_1():
         ir_sub = rospy.Subscriber('IR', Bool, callback)
         print("box is loading")
     hh.IR==False  #reset
-    rospy.sleep(1)
+    rospy.sleep(5)
     print("boxload is complete")
 
     while not rospy.is_shutdown():

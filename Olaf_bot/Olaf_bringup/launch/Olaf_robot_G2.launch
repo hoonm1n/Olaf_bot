@@ -18,12 +18,12 @@
   <include file="$(find Olaf_bringup)/launch/Olaf_imu.launch">
     <arg name="set_port" value="$(arg set_port_imu)"/>
   </include>
-  
-  <include file="$(find servo_test)/launch/servo_motor.launch">
-  </include>
 
-  <node pkg="Olaf_bringup" type="olaf_push" name="olaf_push" output="screen">
+  <node pkg="Olaf_bringup" type="olaf_push.py" name="olaf_push" output="screen">
   </node>
-  <node pkg="Olaf_bringup" type="olaf_movegoal" name="olaf_movegoal" output="screen">
+  <node pkg="Olaf_bringup" type="olaf_movegoal.py" name="olaf_movegoal" output="screen">
   </node>
+
+  <include file="$(find robot_localization)/launch/ekf_template.launch">
+  </include>
 </launch>

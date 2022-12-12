@@ -79,6 +79,7 @@ catkin_install_python(PROGRAMS
   src/olaf_movegoal.py
   src/tu_listener.py
   src/tu_talker.py
+  nodes/Olaf_push.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

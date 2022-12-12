@@ -12,12 +12,35 @@ import numpy as np
 import time
 from std_msgs.msg import Float32MultiArray
 from std_msgs.msg import String
-from Olaf_bringup.srv import request_to_motor
+from Olaf_bringup.srv import request_to_motor, Appdata
 import sys
+global appFlag
+global appFlag_2
+appFlag = ""
+appFlag_2 = ""
 
 class state:
     con = 0
     pubApp = "1"
+
+
+def add_two_ints_server():
+    s = rospy.Service('App_data', Appdata, handle_add_two_ints)
+    print("--------------------")
+    
+
+def handle_add_two_ints(Appdata):
+    appFlag = Appdata.input1
+    appFlag_2 = Appdata.input2
+    
+    while (1):
+        print("nnnnn")
+        if appFlag == "loaded":
+            print("yyyyyyy")
+            break
+    return "loadOk"
+
+
 
 def Box_client(open):
     rospy.wait_for_service('req_box')
@@ -28,20 +51,22 @@ def Box_client(open):
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
 
-
 #뜽인이 코드 쪽
 def loadBox():
     done = Box_client(1)
-    # while(1):
-    #     if(done):
-    #         break
+    print("---------------")
+    print(done)
+    while(1):
+        if(done):
+            break
 
     
 def giveBox():
     done = Box_client(0)
-    # while(1):
-    #     if(done):
-    #         break
+    print(done)
+    while(1):
+        if(done):
+            break
 
 
 def callback(msg):
@@ -79,7 +104,7 @@ def move_to(goal_point):
 
 def goal_def(arr_room):
     goal_test = GoalPose()
-    error = 0.5
+    error = 0.3
 
     for room in arr_room:
         if room == 101:
@@ -114,13 +139,20 @@ def goal_def(arr_room):
                 hi = 1
             state.pubApp = "2"
             app_pub.publish(state.pubApp)
-            loadBox
+            loadBox()
+            add_two_ints_server()
+            while(1):
+                
+                print("not yet")
+                if appFlag == "loaded":
+                    print("gotodev")
+                    break
 
         elif(state.con == 1):
             while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
                 hi = 1
             state.pubApp = "3"
-            giveBox
+            giveBox()
             app_pub.publish(state.pubApp) 
 
         elif(state.con == 2):

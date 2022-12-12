@@ -12,7 +12,10 @@ import numpy as np
 import time
 from std_msgs.msg import Float32MultiArray
 
-
+def handle_add_two_ints(Appdata):
+    roompose = Appdata.input1
+    recievemethod = Appdata.input2
+    
 def callback(msg):
     global current_pose
     current_pose = msg
