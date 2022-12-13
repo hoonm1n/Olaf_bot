@@ -24,6 +24,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 add_message_files(
   FILES
+  datas.msg
   To_odom.msg
 )
 

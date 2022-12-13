@@ -12,35 +12,36 @@ import numpy as np
 import time
 from std_msgs.msg import Float32MultiArray
 from std_msgs.msg import String
+from Olaf_bringup.msg import datas
 from Olaf_bringup.srv import request_to_motor, Appdata
 import sys
-global appFlag
-global appFlag_2
-appFlag = ""
-appFlag_2 = ""
+
+# global appFlag
+# global appFlag_2
+# appFlag = ""
+# appFlag_2 = ""
 
 class state:
     con = 0
     pubApp = "1"
+    App_data = ""
 
 
-def add_two_ints_server():
-    s = rospy.Service('App_data', Appdata, handle_add_two_ints)
-    print("--------------------")
+# def add_two_ints_server():
+#     s = rospy.Service('App_data', Appdata, handle_add_two_ints)
+#     print("--------------------")
     
 
-def handle_add_two_ints(Appdata):
-    appFlag = Appdata.input1
-    appFlag_2 = Appdata.input2
+# def handle_add_two_ints(Appdata):
+#     appFlag = Appdata.input1
+#     appFlag_2 = Appdata.input2
     
-    while (1):
-        print("nnnnn")
-        if appFlag == "loaded":
-            print("yyyyyyy")
-            break
-    return "loadOk"
-
-
+#     while (1):
+#         print("nnnnn")
+#         if appFlag == "loaded":
+#             print("yyyyyyy")
+#             break
+#     return "loadOk"
 
 def Box_client(open):
     rospy.wait_for_service('req_box')
@@ -77,6 +78,10 @@ def callbackRoom(data):
     arr_room = []
     arr_room = data.data
     goal_def(arr_room)
+
+def callbackApp(msg):
+    #global App_data
+    state.App_data = msg.pubData
 
 class GoalPose:
     x = 0.
@@ -137,23 +142,24 @@ def goal_def(arr_room):
         if(state.con == 0):
             while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
                 hi = 1
-            state.pubApp = "2"
-            app_pub.publish(state.pubApp)
-            loadBox()
-            add_two_ints_server()
-            while(1):
+
                 
-                print("not yet")
-                if appFlag == "loaded":
-                    print("gotodev")
-                    break
+            # state.pubApp = "2"
+            # app_pub.publish(state.pubApp)
+            # loadBox()
+            # add_two_ints_server()
+            # while(1):
+            #     print("not yet")
+            #     if state.App_data == "go":
+            #         print("gotodev")
+            #         break
 
         elif(state.con == 1):
             while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
                 hi = 1
-            state.pubApp = "3"
-            giveBox()
-            app_pub.publish(state.pubApp) 
+            # state.pubApp = "3"
+            # giveBox()
+            # app_pub.publish(state.pubApp) 
 
         elif(state.con == 2):
             while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
@@ -169,6 +175,7 @@ if __name__=='__main__':
     rospy.init_node('map_navigation_lis', anonymous=True)
     odom_sub = rospy.Subscriber('/amcl_pose', PoseWithCovarianceStamped, callback)
     tu_sub = rospy.Subscriber('room_info', Float32MultiArray, callbackRoom)
+    Data_sub = rospy.Subscriber('Sub_App', datas, callbackApp)
     app_pub = rospy.Publisher('robot2app', String, queue_size=1)
     ac = actionlib.SimpleActionClient("move_base", MoveBaseAction)
     ac.wait_for_server() # !!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -73,6 +73,7 @@ catkin_install_python(PROGRAMS
   src/mg955_test.py
   src/pub_signal.py
   src/IR.py
+  src/IR_test.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

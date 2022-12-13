@@ -33,6 +33,9 @@ if __name__ == '__main__':
     try:
         while 1:
             IR_Data = GPIO.input(22)
-            print(IR_Data)
+            print("++++++++++++")
+            if(IR_Data == 1):
+                print(IR_Data)
+                print("----------")
     finally:
         GPIO.cleanup()
