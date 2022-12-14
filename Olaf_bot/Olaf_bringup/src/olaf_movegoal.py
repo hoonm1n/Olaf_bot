@@ -118,8 +118,8 @@ def goal_def(arr_room):
         move_to(goal_test)
 
         if(state.con == 0):
-            # while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
-            #     hi = 1    
+            while((abs(current_pose.pose.pose.position.x - goal_test.x) > error) or (abs(current_pose.pose.pose.position.y - goal_test.y) > error)):
+                hi = 1    
             state.pubApp = "2"
             app_pub.publish(state.pubApp)
             while(state.goalvel_R != 0 or state.goalvel_L != 0):
