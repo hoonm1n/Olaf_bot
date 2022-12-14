@@ -126,10 +126,10 @@ def goal_def(arr_room):
             goal_test.w = 0.004742872505715466
         elif room == 103:
             rospy.loginfo("103")
-            goal_test.x = 7.706090844535842
-            goal_test.y = 23.05292972382056
-            goal_test.z = 0.9998215006766188
-            goal_test.w = 0.018893564638628315
+            goal_test.x = 7.809368039262499
+            goal_test.y = 25.344483431172122
+            goal_test.z = 0.7100544377967035
+            goal_test.w = 0.7041467853829962
         # elif room == 104:
         #     rospy.loginfo("104")
         #     goal_test.x = 1.75060760178

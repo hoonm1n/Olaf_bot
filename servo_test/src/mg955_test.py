@@ -85,25 +85,27 @@ def callback(msg):
 
 
 def move_1():
-    pwm.set_pwm_freq(60)
+    pwm.set_pwm_freq(50)
     count=0
     print('Moving servo on channel, press Ctrl-C to quit...')
 
+    pwm.set_all_pwm(0, 0)
     while not rospy.is_shutdown():
         
-        if count == 40 :
+        if count == 200 :
 
             pwm.set_all_pwm(0, 0)
             count=500
             print("reset count")
         elif count ==500:
             break
-        elif count <40:
-            pwm.set_pwm(0, 0, servo_min)
-            rospy.sleep(0.01)
-            pwm.set_pwm(13, 0, servo_min)
-            rospy.sleep(0.01)
-
+        elif count <200:
+            #pwm.set_pwm(3, 0, 200)  #down
+            pwm.set_pwm(0, 0, servo_max)  
+            #pwm.set_pwm(4, 0, servo_max)  #up
+            #pwm.set_pwm(0, 0, servo_min)   
+            
+            #pwm.set_all_pwm(0, 150)
             count=count+1
             print("count ",count) 
     print("cover open") 
@@ -112,25 +114,23 @@ def move_1():
     while hh.IR==False:
         pwm.set_all_pwm(0, 0)
         ir_sub = rospy.Subscriber('IR', Bool, callback)
-        print("box is loading")
+        #print("box is loading")
     hh.IR==False  #reset
     rospy.sleep(5)
     print("boxload is complete")
 
     while not rospy.is_shutdown():
         
-        if count == 40 :
+        if count == 230 :
             pwm.set_all_pwm(0, 0)
             count=500
             print("reset count")
         elif count ==500:
             break
-        elif count <40:
+        elif count <230:
+            pwm.set_pwm(4, 0, 500) #servo_min
             pwm.set_pwm(0, 0, servo_max)
-            rospy.sleep(0.01)
-            pwm.set_pwm(13, 0, servo_max)
-            rospy.sleep(0.01)
-
+            
             count=count+1
             print("count ",count)
 

@@ -150,14 +150,13 @@
     <child link="imu_link"/>
     <origin xyz="0.0 0 0.190" rpy="0 0 0"/>
   </joint>
-  asfasdasdasfasdasa
-  -0.07657 0.6439
+  
   <link name="imu_link"/>
 
   <joint name="scan_joint" type="fixed">
     <parent link="base_link"/>
     <child link="base_scan"/>
-    <origin xyz="0.09029 0 0.3235" rpy="0.0 0.0 0.0"/>
+    <origin xyz="-0.07657 0 0.6439" rpy="0.0 0.0 0.0"/>
   </joint>
 
   <link name="base_scan">

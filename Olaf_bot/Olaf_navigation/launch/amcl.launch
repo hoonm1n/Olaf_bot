@@ -1,8 +1,8 @@
 <launch>
   <!-- Arguments -->
   <arg name="scan_topic"     default="scan"/>
-  <arg name="initial_pose_x" default="5.294439375311952"/>
-  <arg name="initial_pose_y" default="17.223067681405002`"/>
+  <arg name="initial_pose_x" default="7.729646663467448"/>
+  <arg name="initial_pose_y" default="25.059553029324686"/>
   <arg name="initial_pose_a" default="0.0"/>
 
   <!-- AMCL -->
